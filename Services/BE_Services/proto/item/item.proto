@@ -6,7 +6,7 @@ option go_package = ".";
 
 service SvcItem {
     rpc RpcItem(PbItem) returns (PbResp) {}
-    rpc RpcItems(PbResp) returns (PbItems) {}
+    rpc RpcItems(PbReq) returns (PbItems) {}
 }
 
 message PbItem {
@@ -17,10 +17,12 @@ message PbItems {
     repeated   PbItem  items = 1;
 }
 
-message PbReq {
-    string message =  1;
+message PbReq{
+
 }
 
 message PbResp {
-    string message =  1;
+    bool isErr = 1;
+    string error = 2;
+    string message =  3;
 }

@@ -7,7 +7,7 @@ import (
 	"net"
 	"os"
 
-	itempb "grpclistener/proto"
+	itempb "proto/item"
 
 	"google.golang.org/grpc"
 )
@@ -20,9 +20,7 @@ func main() {
 	CreateServer()
 }
 
-//
 // TODO
-//
 func CreateServer() {
 	lis, err := net.Listen("tcp", fmt.Sprintf(":%s", os.Getenv("SERVER_PORT")))
 	if err != nil {
@@ -36,16 +34,12 @@ func CreateServer() {
 	}
 }
 
-//
 // TODO
-//
 func (s *itemPbServer) RpcItem(ctx context.Context, in *itempb.PbItem) (*itempb.PbResp, error) {
 	return &itempb.PbResp{}, nil
 }
 
-//
 // TODO
-//
-func (s *itemPbServer) RpcStatuses(ctx context.Context, in *itempb.PbStatuses) (*itempb.PbResp, error) {
-	return &itempb.PbResp{}, nil
+func (s *itemPbServer) RpcItems(ctx context.Context, in *itempb.PbReq) (*itempb.PbItems, error) {
+	return &itempb.PbItems{}, nil
 }

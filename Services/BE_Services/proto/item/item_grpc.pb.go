@@ -23,7 +23,7 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type SvcItemClient interface {
 	RpcItem(ctx context.Context, in *PbItem, opts ...grpc.CallOption) (*PbResp, error)
-	RpcItems(ctx context.Context, in *PbResp, opts ...grpc.CallOption) (*PbItems, error)
+	RpcItems(ctx context.Context, in *PbReq, opts ...grpc.CallOption) (*PbItems, error)
 }
 
 type svcItemClient struct {
@@ -43,7 +43,7 @@ func (c *svcItemClient) RpcItem(ctx context.Context, in *PbItem, opts ...grpc.Ca
 	return out, nil
 }
 
-func (c *svcItemClient) RpcItems(ctx context.Context, in *PbResp, opts ...grpc.CallOption) (*PbItems, error) {
+func (c *svcItemClient) RpcItems(ctx context.Context, in *PbReq, opts ...grpc.CallOption) (*PbItems, error) {
 	out := new(PbItems)
 	err := c.cc.Invoke(ctx, "/PbItem.SvcItem/RpcItems", in, out, opts...)
 	if err != nil {
@@ -57,7 +57,7 @@ func (c *svcItemClient) RpcItems(ctx context.Context, in *PbResp, opts ...grpc.C
 // for forward compatibility
 type SvcItemServer interface {
 	RpcItem(context.Context, *PbItem) (*PbResp, error)
-	RpcItems(context.Context, *PbResp) (*PbItems, error)
+	RpcItems(context.Context, *PbReq) (*PbItems, error)
 	mustEmbedUnimplementedSvcItemServer()
 }
 
@@ -68,7 +68,7 @@ type UnimplementedSvcItemServer struct {
 func (UnimplementedSvcItemServer) RpcItem(context.Context, *PbItem) (*PbResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RpcItem not implemented")
 }
-func (UnimplementedSvcItemServer) RpcItems(context.Context, *PbResp) (*PbItems, error) {
+func (UnimplementedSvcItemServer) RpcItems(context.Context, *PbReq) (*PbItems, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RpcItems not implemented")
 }
 func (UnimplementedSvcItemServer) mustEmbedUnimplementedSvcItemServer() {}
@@ -103,7 +103,7 @@ func _SvcItem_RpcItem_Handler(srv interface{}, ctx context.Context, dec func(int
 }
 
 func _SvcItem_RpcItems_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(PbResp)
+	in := new(PbReq)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -115,7 +115,7 @@ func _SvcItem_RpcItems_Handler(srv interface{}, ctx context.Context, dec func(in
 		FullMethod: "/PbItem.SvcItem/RpcItems",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(SvcItemServer).RpcItems(ctx, req.(*PbResp))
+		return srv.(SvcItemServer).RpcItems(ctx, req.(*PbReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
