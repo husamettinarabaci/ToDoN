@@ -1,1 +1,4 @@
 go 1.18
+
+use ./grpclistener
+use ./proto

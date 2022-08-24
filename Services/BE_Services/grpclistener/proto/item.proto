@@ -1,0 +1,26 @@
+syntax="proto3";
+
+package PbItem;
+option go_package = ".";
+
+
+service SvcItem {
+    rpc RpcItem(PbItem) returns (PbResp) {}
+    rpc RpcItems(PbResp) returns (PbItems) {}
+}
+
+message PbItem {
+    string value     =1;      
+}
+
+message PbItems {
+    repeated   PbItem  items = 1;
+}
+
+message PbReq {
+    string message =  1;
+}
+
+message PbResp {
+    string message =  1;
+}

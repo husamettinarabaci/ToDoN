@@ -1,4 +1,4 @@
-# ToDoN
+# Configs
 Web Based ToDo List Application for Modanisa
 
 ## Deciriptions
@@ -8,5 +8,4 @@ Web Based ToDo List Application for Modanisa
 ## Usage
 
 ## For Developers
- - installation golang 
  
