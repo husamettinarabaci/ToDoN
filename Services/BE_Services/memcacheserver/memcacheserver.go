@@ -21,12 +21,13 @@ type itemPbServer struct {
 
 var (
 	errDublicateValue = errors.New("duplicate value is ignored")
+	errEmptyValue     = errors.New("value can not be empty")
 )
 
 var (
-	cachedItems itempb.PbItems
-	lastItem    itempb.PbItem
+	cachedItems map[int]itempb.PbItem
 	chItem      chan itempb.PbItem
+	lastIndex   int
 )
 
 var (
@@ -49,9 +50,14 @@ func init() {
 }
 
 func main() {
+
+	chItem = make(chan itempb.PbItem)
+	cachedItems = make(map[int]itempb.PbItem)
+
 	wg.Add(3)
 	go storeValues()
 	go creategRpcServer()
+	go createHttpServer()
 	wg.Wait()
 }
 
@@ -92,17 +98,36 @@ func (s *itemPbServer) RpcItem(ctx context.Context, in *itempb.PbItem) (*itempb.
 
 	var pbResp itempb.PbResp
 
+	log.Println("RpcItem : ")
+	log.Println(in)
+
 	sleepASecond()
 
-	//Check if the same data overlaps
-	if lastItem.Value != in.Value {
-		lastItem = *in
-		chItem <- *in
-		pbResp.Message = "SUCCESS"
-	} else {
+	//Check if the value is empty
+	if in.Value == "" {
 		pbResp.IsErr = true
-		pbResp.Error = errDublicateValue.Error()
+		pbResp.Error = errEmptyValue.Error()
+	} else {
+
+		//Check if the received data exist in the cache
+		isExist := false
+
+		for _, v := range cachedItems {
+			if v.Value == in.Value {
+				isExist = true
+				break
+			}
+		}
+		if !isExist {
+			chItem <- *in
+			pbResp.Message = "SUCCESS"
+		} else {
+			pbResp.IsErr = true
+			pbResp.Error = errDublicateValue.Error()
+		}
 	}
+
+	log.Println(pbResp)
 	return &pbResp, nil
 }
 
@@ -111,8 +136,15 @@ func (s *itemPbServer) RpcItem(ctx context.Context, in *itempb.PbItem) (*itempb.
 func (s *itemPbServer) RpcItems(ctx context.Context, in *itempb.PbReq) (*itempb.PbItems, error) {
 
 	sleepASecond()
-
-	return &cachedItems, nil
+	items := &itempb.PbItems{}
+	items.Items = make([]*itempb.PbItem, len(cachedItems))
+	for i, v := range cachedItems {
+		items.Items[i] = &itempb.PbItem{Value: v.Value}
+	}
+	log.Println("RpcItems : ")
+	log.Println(cachedItems)
+	log.Println(items)
+	return items, nil
 }
 
 // sleepASecond
@@ -127,10 +159,10 @@ func sleepASecond() {
 // This function stores received values in to the mem-cache
 func storeValues() {
 
-	for {
-		select {
-		case newItem := <-chItem:
-			cachedItems.Items = append(cachedItems.Items, &newItem)
-		}
+	for newItem := range chItem {
+		cachedItems[lastIndex] = newItem
+		lastIndex++
+		log.Println("Stored Values : ")
+		log.Println(cachedItems)
 	}
 }
