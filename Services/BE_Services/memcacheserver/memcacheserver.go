@@ -5,7 +5,9 @@ import (
 	"errors"
 	"log"
 	"net"
+	"net/http"
 	"os"
+	"sync"
 	"time"
 
 	itempb "proto/item"
@@ -18,7 +20,7 @@ type itemPbServer struct {
 }
 
 var (
-	errDublicateValue = errors.New("Duplicate value is ignored")
+	errDublicateValue = errors.New("duplicate value is ignored")
 )
 
 var (
@@ -29,6 +31,10 @@ var (
 
 var (
 	serverPort string
+)
+
+var (
+	wg sync.WaitGroup
 )
 
 // init
@@ -43,14 +49,30 @@ func init() {
 }
 
 func main() {
+	wg.Add(3)
 	go storeValues()
-	createServer()
+	go creategRpcServer()
+	wg.Wait()
 }
 
-// createServer
+// createHttpServer
+// This function creates a new http-server and listens it
+// This server is used for probe by K8S
+func createHttpServer() {
+	http.HandleFunc("/health", HealthHandler)
+	http.ListenAndServe(":80", nil)
+}
+
+// healthHandler
+// This handler is used by K8S for probe of healty
+func HealthHandler(w http.ResponseWriter, r *http.Request) {
+	w.WriteHeader(http.StatusOK)
+}
+
+// creategRpcServer
 // This function creates a new grpc-server and listens it
 // It uses "SERVER_PORT" variable in the environment for the port of new server
-func createServer() {
+func creategRpcServer() {
 	lis, err := net.Listen("tcp", serverPort)
 	if err != nil {
 		panic(err)

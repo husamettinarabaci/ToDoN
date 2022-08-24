@@ -1,8 +1,8 @@
-module grpclistener
+module memcacheserver
 
 go 1.19
 
-replace proto/item => ../proto/item
+replace proto/item => ../../Shareds/proto/item
 
 require (
 	google.golang.org/grpc v1.49.0
