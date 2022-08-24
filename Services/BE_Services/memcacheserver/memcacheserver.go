@@ -25,9 +25,8 @@ var (
 )
 
 var (
-	cachedItems map[int]itempb.PbItem
+	cachedItems itempb.PbItems
 	chItem      chan itempb.PbItem
-	lastIndex   int
 )
 
 var (
@@ -52,7 +51,6 @@ func init() {
 func main() {
 
 	chItem = make(chan itempb.PbItem)
-	cachedItems = make(map[int]itempb.PbItem)
 
 	wg.Add(3)
 	go storeValues()
@@ -112,7 +110,7 @@ func (s *itemPbServer) RpcItem(ctx context.Context, in *itempb.PbItem) (*itempb.
 		//Check if the received data exist in the cache
 		isExist := false
 
-		for _, v := range cachedItems {
+		for _, v := range cachedItems.Items {
 			if v.Value == in.Value {
 				isExist = true
 				break
@@ -136,15 +134,9 @@ func (s *itemPbServer) RpcItem(ctx context.Context, in *itempb.PbItem) (*itempb.
 func (s *itemPbServer) RpcItems(ctx context.Context, in *itempb.PbReq) (*itempb.PbItems, error) {
 
 	sleepASecond()
-	items := &itempb.PbItems{}
-	items.Items = make([]*itempb.PbItem, len(cachedItems))
-	for i, v := range cachedItems {
-		items.Items[i] = &itempb.PbItem{Value: v.Value}
-	}
 	log.Println("RpcItems : ")
 	log.Println(cachedItems)
-	log.Println(items)
-	return items, nil
+	return &cachedItems, nil
 }
 
 // sleepASecond
@@ -160,8 +152,7 @@ func sleepASecond() {
 func storeValues() {
 
 	for newItem := range chItem {
-		cachedItems[lastIndex] = newItem
-		lastIndex++
+		cachedItems.Items = append(cachedItems.Items, &itempb.PbItem{Value: newItem.Value})
 		log.Println("Stored Values : ")
 		log.Println(cachedItems)
 	}
