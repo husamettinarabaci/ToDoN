@@ -23,19 +23,19 @@ var (
 )
 
 var (
-	memcacheServerIp   string
+	memcacheServerIP   string
 	memcacheServerPort string
 )
 
 // init
-// The values of memcacheServerIp and memcacheServerPort are setting to localhost:33800 for default
+// The values of memcacheServerIP and memcacheServerPort are setting to localhost:33800 for default
 // If "MEMCACHE_SERVER_IP" or "MEMCACHE_SERVER_PORT" variables are exist in the environment
-// then the values of memcacheServerIp and memcacheServerPort are setting to "MEMCACHE_SERVER_IP:MEMCACHE_SERVER_PORT" variables
+// then the values of memcacheServerIP and memcacheServerPort are setting to "MEMCACHE_SERVER_IP:MEMCACHE_SERVER_PORT" variables
 func init() {
-	memcacheServerIp = "localhost"
+	memcacheServerIP = "localhost"
 	memcacheServerPort = "33800"
 	if si := os.Getenv("MEMCACHE_SERVER_IP"); si != "" {
-		memcacheServerIp = si
+		memcacheServerIP = si
 	}
 	if sp := os.Getenv("MEMCACHE_SERVER_PORT"); sp != "" {
 		memcacheServerPort = sp
@@ -61,18 +61,16 @@ func createHTTPServer() {
 	}
 }
 
-// HealthHandler
-// This handler is used by K8S for probe of healty
+// HealthHandler is used by K8S for probe of healty
 func HealthHandler(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 }
 
-// AddTodoHandler
-// This handler adds a new todo
+// AddTodoHandler adds a new todo
 func AddTodoHandler(w http.ResponseWriter, r *http.Request) {
 	item := r.FormValue("item")
 
-	conn, err := grpc.Dial(memcacheServerIp+":"+memcacheServerPort, grpc.WithTransportCredentials(insecure.NewCredentials()))
+	conn, err := grpc.Dial(memcacheServerIP+":"+memcacheServerPort, grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		panic(err)
 	}
@@ -93,11 +91,10 @@ func AddTodoHandler(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, "/", http.StatusMovedPermanently)
 }
 
-// GetAllTodoHandler
-// This handler returns all todo values
+// GetAllTodoHandler returns all todo values
 func GetAllTodoHandler(w http.ResponseWriter, r *http.Request) {
 
-	conn, err := grpc.Dial(memcacheServerIp+":"+memcacheServerPort, grpc.WithTransportCredentials(insecure.NewCredentials()))
+	conn, err := grpc.Dial(memcacheServerIP+":"+memcacheServerPort, grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		panic(err)
 	}
@@ -115,13 +112,13 @@ func GetAllTodoHandler(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	data := View{
+	data := viewDatas{
 		Todos: todos,
 	}
 
 	_ = indexView.Execute(w, data)
 }
 
-type View struct {
+type viewDatas struct {
 	Todos []string
 }

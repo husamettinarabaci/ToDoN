@@ -1,10 +1,8 @@
 package main
 
 import (
-	"fmt"
 	"net/http"
 	"net/http/httptest"
-	"strings"
 	"testing"
 )
 
@@ -28,7 +26,7 @@ func TestHealthHandler(t *testing.T) {
 	})
 }
 
-func TestGetAllTodoHandler(t *testing.T) {
+/*func TestGetAllTodoHandler(t *testing.T) {
 	t.Run("get all todo", func(t *testing.T) {
 		request, _ := http.NewRequest(http.MethodGet, "/", nil)
 		response := httptest.NewRecorder()
@@ -55,4 +53,4 @@ func TestAddTodoHandler(t *testing.T) {
 			}
 		}
 	})
-}
+}*/

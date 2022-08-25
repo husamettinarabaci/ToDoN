@@ -60,6 +60,7 @@ func main() {
 	wg.Wait()
 }
 
+// StartApp starts application once
 func StartApp() {
 	if isStarted {
 		return
