@@ -3,10 +3,9 @@ FROM golang:latest as builder
 
 LABEL maintainer="Hüsamettin ARABACI <husamettin.arabaci@hsmteknoloji.com>"
 
-COPY . ./
-
+COPY . /
 WORKDIR /Services/BE_Services/memcacheserver
-
+RUN echo $(ls)
 RUN go mod download
 
 RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o memcacheserver .
