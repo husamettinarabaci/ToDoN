@@ -1,4 +1,4 @@
-name: Mem-Cache Server Test
+name: Web Server Test
 
 on:
   push:
