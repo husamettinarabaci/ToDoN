@@ -1,0 +1,34 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: memcacheserver-deployment
+  labels:
+    app: memcacheserver
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: memcacheserver
+  template:
+    metadata:
+      labels:
+        app: memcacheserver
+    spec:
+      containers:
+      - name: memcacheserver
+        image: devhsmtek/memcacheserver:latest
+        imagePullPolicy: "Always"
+        envFrom:
+          - configMapRef:
+              name: memcacheserver-config
+        ports:
+        - containerPort: 80
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 80
+            scheme: HTTP
+          initialDelaySeconds: 5
+          periodSeconds: 15
+          timeoutSeconds: 5

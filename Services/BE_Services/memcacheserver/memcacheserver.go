@@ -38,11 +38,11 @@ var (
 )
 
 // init
-// The value of serverPort is setting to 33800 for default
+// The value of serverPort is setting to :33800 for default
 // If "SERVER_PORT" variable is exist in the environment
-// then the value of serverPort is setting to "SERVER_PORT" variable
+// then the value of serverPort is setting to ":SERVER_PORT" variable
 func init() {
-	serverPort = ":33800"
+	serverPort = "33800"
 	if sp := os.Getenv("SERVER_PORT"); sp != "" {
 		serverPort = ":" + sp
 	}
@@ -75,7 +75,6 @@ func HealthHandler(w http.ResponseWriter, r *http.Request) {
 
 // creategRpcServer
 // This function creates a new grpc-server and listens it
-// It uses "SERVER_PORT" variable in the environment for the port of new server
 func creategRpcServer() {
 	lis, err := net.Listen("tcp", serverPort)
 	if err != nil {

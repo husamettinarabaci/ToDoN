@@ -27,6 +27,4 @@ ENV CONTAINER_TYPE=memcacheserver
 
 COPY --from=builder /app/memcacheserver .
 
-ENV SERVER_PORT=33800
-EXPOSE ${SERVER_PORT}
 CMD ["./memcacheserver"]

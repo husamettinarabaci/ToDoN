@@ -4,6 +4,7 @@ import (
 	"context"
 	"log"
 	"net/http"
+	"os"
 	"sync"
 	"text/template"
 
@@ -21,6 +22,26 @@ var (
 	indexView = template.Must(template.ParseFiles("./views/index.html"))
 )
 
+var (
+	memcacheServerIp   string
+	memcacheServerPort string
+)
+
+// init
+// The values of memcacheServerIp and memcacheServerPort are setting to localhost:33800 for default
+// If "MEMCACHE_SERVER_IP" or "MEMCACHE_SERVER_PORT" variables are exist in the environment
+// then the values of memcacheServerIp and memcacheServerPort are setting to "MEMCACHE_SERVER_IP:MEMCACHE_SERVER_PORT" variables
+func init() {
+	memcacheServerIp = "localhost"
+	memcacheServerPort = "33800"
+	if si := os.Getenv("MEMCACHE_SERVER_IP"); si != "" {
+		memcacheServerIp = si
+	}
+	if sp := os.Getenv("MEMCACHE_SERVER_PORT"); sp != "" {
+		memcacheServerPort = sp
+	}
+}
+
 func main() {
 
 	wg.Add(1)
@@ -34,7 +55,7 @@ func createHttpServer() {
 	http.HandleFunc("/", GetAllTodoHandler)
 	http.HandleFunc("/add", AddTodoHandler)
 	http.HandleFunc("/health", HealthHandler)
-	err := http.ListenAndServe(":8080", nil)
+	err := http.ListenAndServe(":80", nil)
 	if err != nil {
 		panic(err)
 	}
@@ -51,7 +72,7 @@ func HealthHandler(w http.ResponseWriter, r *http.Request) {
 func AddTodoHandler(w http.ResponseWriter, r *http.Request) {
 	item := r.FormValue("item")
 
-	conn, err := grpc.Dial("localhost:33800", grpc.WithTransportCredentials(insecure.NewCredentials()))
+	conn, err := grpc.Dial(memcacheServerIp+":"+memcacheServerPort, grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		panic(err)
 	}
@@ -76,7 +97,7 @@ func AddTodoHandler(w http.ResponseWriter, r *http.Request) {
 // This handler returns all todo values
 func GetAllTodoHandler(w http.ResponseWriter, r *http.Request) {
 
-	conn, err := grpc.Dial("localhost:33800", grpc.WithTransportCredentials(insecure.NewCredentials()))
+	conn, err := grpc.Dial(memcacheServerIp+":"+memcacheServerPort, grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		panic(err)
 	}

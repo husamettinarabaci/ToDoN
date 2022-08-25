@@ -29,5 +29,4 @@ COPY --from=builder /app/webserver .
 RUN mkdir ./views
 COPY ./views/* ./views/
 
-EXPOSE 80
 CMD ["./webserver"]
