@@ -1,15 +1,16 @@
-name: Audit_webserver
+name: Mem-Cache Server Test
 
 on:
   push:
     branches: [main]
+  workflow_dispatch:
 
 jobs:
   audit:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./Services/FE_Services/webserver
+        working-directory: ./Services/BE_Services/memcacheserver
     steps:
     - uses: actions/checkout@v2
     - name: Set up Go
@@ -29,4 +30,4 @@ jobs:
     - name: Run golint
       run: golint ./...
     - name: Run tests
-      run: go test -race -vet=off ./...
+      run: go test -vet=off ./...
