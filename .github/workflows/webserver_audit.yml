@@ -3,7 +3,6 @@ name: Web Server Test
 on:
   push:
     branches: [main]
-  workflow_dispatch:
 
 jobs:
   audit:

@@ -3,7 +3,6 @@ name: Mem-Cache Server Test
 on:
   push:
     branches: [main]
-  workflow_dispatch:
 
 jobs:
   audit:
