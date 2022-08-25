@@ -6,12 +6,12 @@ import (
 	"testing"
 )
 
-var addTests = []string{
+/*var addTests = []string{
 	"Wake up",
 	"Prepare breakfast",
 	"Get dressed",
 	"Go to work",
-}
+}*/
 
 func TestHealthHandler(t *testing.T) {
 	t.Run("health probe statu", func(t *testing.T) {
