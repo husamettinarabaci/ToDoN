@@ -3,14 +3,11 @@ FROM golang:latest as builder
 
 LABEL maintainer="Hüsamettin ARABACI <husamettin.arabaci@hsmteknoloji.com>"
 
-WORKDIR /app
+COPY . ./
 
-COPY ./Services/BE_Services/memcacheserver/go.mod ./
-COPY ./Services/BE_Services/memcacheserver/go.sum ./
+WORKDIR /Services/BE_Services/memcacheserver
 
 RUN go mod download
-
-COPY ./Services/BE_Services/memcacheserver/*.go ./
 
 RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o memcacheserver .
 
@@ -25,6 +22,6 @@ WORKDIR /root/
 
 ENV CONTAINER_TYPE=memcacheserver
 
-COPY --from=builder /app/memcacheserver .
+COPY --from=builder /Services/BE_Services/memcacheserver/memcacheserver .
 
 CMD ["./memcacheserver"]
