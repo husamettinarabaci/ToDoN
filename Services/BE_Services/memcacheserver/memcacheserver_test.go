@@ -18,7 +18,7 @@ var addTests = []itempb.PbItem{
 	{Value: "Go to work"},
 }
 
-func TestHealthProbe(t *testing.T) {
+func TestHealthHandler(t *testing.T) {
 	t.Run("health probe statu", func(t *testing.T) {
 		request, _ := http.NewRequest(http.MethodGet, "/health", nil)
 		response := httptest.NewRecorder()
@@ -48,8 +48,8 @@ func TestAddTodo(t *testing.T) {
 			}
 			if resp.Message == "SUCCESS" {
 				t.Log("Todo value is added")
-			} else if resp.IsErr == true {
-				t.Logf("Todo value can't added : %v", resp.Error)
+			} else if resp.IsErr {
+				t.Logf("Todo value can't add : %v", resp.Error)
 			} else {
 				t.Error("RpcItem failed")
 			}

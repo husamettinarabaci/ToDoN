@@ -67,7 +67,7 @@ func createHttpServer() {
 	http.ListenAndServe(":80", nil)
 }
 
-// healthHandler
+// HealthHandler
 // This handler is used by K8S for probe of healty
 func HealthHandler(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
