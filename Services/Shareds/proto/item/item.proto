@@ -5,8 +5,8 @@ option go_package = ".";
 
 
 service SvcItem {
-    rpc RpcItem(PbItem) returns (PbResp) {}
-    rpc RpcItems(PbReq) returns (PbItems) {}
+    rpc RPCItem(PbItem) returns (PbResp) {}
+    rpc RPCItems(PbReq) returns (PbItems) {}
 }
 
 message PbItem {

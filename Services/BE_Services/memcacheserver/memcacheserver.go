@@ -37,45 +37,53 @@ var (
 	wg sync.WaitGroup
 )
 
+var (
+	isStarted = false
+)
+
 // init
 // The value of serverPort is setting to :33800 for default
 // If "SERVER_PORT" variable is exist in the environment
 // then the value of serverPort is setting to ":SERVER_PORT" variable
 func init() {
-	serverPort = "33800"
+	serverPort = ":33800"
 	if sp := os.Getenv("SERVER_PORT"); sp != "" {
 		serverPort = ":" + sp
 	}
+	chItem = make(chan string)
 }
 
 func main() {
 
-	chItem = make(chan string)
-
 	wg.Add(3)
-	go storeValues()
-	go creategRpcServer()
-	go createHttpServer()
+	StartApp()
 	wg.Wait()
 }
 
-// createHttpServer
-// This function creates a new http-server and listens it
+func StartApp() {
+	if isStarted {
+		return
+	}
+	isStarted = true
+	go storeValues()
+	go CreategRPCServer()
+	go createHTTPServer()
+}
+
+// createHTTPServer creates a new http-server and listens it
 // This server is used for probe by K8S
-func createHttpServer() {
+func createHTTPServer() {
 	http.HandleFunc("/health", HealthHandler)
 	http.ListenAndServe(":80", nil)
 }
 
-// HealthHandler
-// This handler is used by K8S for probe of healty
+// HealthHandler is used by K8S for probe of healty
 func HealthHandler(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 }
 
-// creategRpcServer
-// This function creates a new grpc-server and listens it
-func creategRpcServer() {
+// CreategRPCServer creates a new grpc-server and listens it
+func CreategRPCServer() {
 	lis, err := net.Listen("tcp", serverPort)
 	if err != nil {
 		panic(err)
@@ -88,11 +96,9 @@ func creategRpcServer() {
 	}
 }
 
-// RpcItem
-// This function receives the new value and store it in the mem-cache
+// RPCItem receives the new value and store it in the mem-cache
 // This function returns a message of "SUCCESS" or "Error message"
-func (s *itemPbServer) RpcItem(ctx context.Context, in *itempb.PbItem) (*itempb.PbResp, error) {
-
+func (s *itemPbServer) RPCItem(ctx context.Context, in *itempb.PbItem) (*itempb.PbResp, error) {
 	var pbResp itempb.PbResp
 
 	sleepASecond()
@@ -124,24 +130,21 @@ func (s *itemPbServer) RpcItem(ctx context.Context, in *itempb.PbItem) (*itempb.
 	return &pbResp, nil
 }
 
-// RpcItems
-// This function returns all values in the mem-cache
-func (s *itemPbServer) RpcItems(ctx context.Context, in *itempb.PbReq) (*itempb.PbItems, error) {
+// RPCItems returns all values in the mem-cache
+func (s *itemPbServer) RPCItems(ctx context.Context, in *itempb.PbReq) (*itempb.PbItems, error) {
 
 	sleepASecond()
 	return &cachedItems, nil
 }
 
-// sleepASecond
-// This function blocks for a second the request for possible DDOS Attack
+// sleepASecond blocks for a second the request for possible DDOS Attack
 func sleepASecond() {
 
 	time.Sleep(time.Second * 1)
 
 }
 
-// storeValues
-// This function stores received values in to the mem-cache
+// storeValues stores received values in to the mem-cache
 func storeValues() {
 
 	for newItem := range chItem {

@@ -45,13 +45,13 @@ func init() {
 func main() {
 
 	wg.Add(1)
-	go createHttpServer()
+	go createHTTPServer()
 	wg.Wait()
 }
 
-// createHttpServer
+// createHTTPServer
 // This function creates a new http-server and listens it
-func createHttpServer() {
+func createHTTPServer() {
 	http.HandleFunc("/", GetAllTodoHandler)
 	http.HandleFunc("/add", AddTodoHandler)
 	http.HandleFunc("/health", HealthHandler)
@@ -78,7 +78,7 @@ func AddTodoHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	defer conn.Close()
 	client := itempb.NewSvcItemClient(conn)
-	resp, err := client.RpcItem(context.Background(), &itempb.PbItem{Value: item})
+	resp, err := client.RPCItem(context.Background(), &itempb.PbItem{Value: item})
 	if err != nil {
 		panic(err)
 	}
@@ -103,7 +103,7 @@ func GetAllTodoHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	defer conn.Close()
 	client := itempb.NewSvcItemClient(conn)
-	resp, err := client.RpcItems(context.Background(), &itempb.PbReq{})
+	resp, err := client.RPCItems(context.Background(), &itempb.PbReq{})
 	if err != nil {
 		panic(err)
 	}

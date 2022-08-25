@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 	"net/http/httptest"
 	itempb "proto/item"
@@ -19,6 +20,7 @@ var addTests = []itempb.PbItem{
 }
 
 func TestHealthHandler(t *testing.T) {
+	StartApp()
 	t.Run("health probe statu", func(t *testing.T) {
 		request, _ := http.NewRequest(http.MethodGet, "/health", nil)
 		response := httptest.NewRecorder()
@@ -32,18 +34,21 @@ func TestHealthHandler(t *testing.T) {
 }
 
 func TestAddTodo(t *testing.T) {
+	StartApp()
 	t.Run("add todo", func(t *testing.T) {
-
 		ctx := context.Background()
-		conn, err := grpc.Dial("localhost:33800", grpc.WithTransportCredentials(insecure.NewCredentials()))
+		conn, err := grpc.Dial(serverPort, grpc.WithTransportCredentials(insecure.NewCredentials()))
 		if err != nil {
-			t.Errorf("Failed to dial server: %v", err)
+			panic(err)
 		}
 		defer conn.Close()
 		client := itempb.NewSvcItemClient(conn)
+		fmt.Println(serverPort)
+
 		for i := 0; i < len(addTests); i++ {
+
 			v := addTests[i].Value
-			resp, err := client.RpcItem(ctx, &itempb.PbItem{Value: v})
+			resp, err := client.RPCItem(ctx, &itempb.PbItem{Value: v})
 			if err != nil {
 				t.Errorf("RpcItem failed: %v", err)
 			}
@@ -60,15 +65,14 @@ func TestAddTodo(t *testing.T) {
 
 func TestGetTodoList(t *testing.T) {
 	t.Run("get all todo", func(t *testing.T) {
-
 		ctx := context.Background()
-		conn, err := grpc.Dial("localhost:33800", grpc.WithTransportCredentials(insecure.NewCredentials()))
+		conn, err := grpc.Dial(serverPort, grpc.WithTransportCredentials(insecure.NewCredentials()))
 		if err != nil {
-			t.Errorf("Failed to dial server: %v", err)
+			panic(err)
 		}
 		defer conn.Close()
 		client := itempb.NewSvcItemClient(conn)
-		resp, err := client.RpcItems(ctx, &itempb.PbReq{})
+		resp, err := client.RPCItems(ctx, &itempb.PbReq{})
 		if err != nil {
 			t.Errorf("RpcItems failed: %v", err)
 		}
@@ -77,4 +81,5 @@ func TestGetTodoList(t *testing.T) {
 		}
 		t.Logf("Returned values : %v", resp.Items)
 	})
+
 }
