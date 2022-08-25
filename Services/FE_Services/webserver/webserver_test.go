@@ -1,17 +1,23 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
 	"net/http/httptest"
+	"strings"
 	"testing"
 )
 
-/*var addTests = []string{
+var addTests = []string{
 	"Wake up",
 	"Prepare breakfast",
 	"Get dressed",
 	"Go to work",
-}*/
+}
+
+func setServerConfigForTest() {
+	memcacheServerIP = "a7eaec74ead004ed0b6ca02c8f58b326-1782140111.eu-central-1.elb.amazonaws.com"
+}
 
 func TestHealthHandler(t *testing.T) {
 	t.Run("health probe statu", func(t *testing.T) {
@@ -26,7 +32,8 @@ func TestHealthHandler(t *testing.T) {
 	})
 }
 
-/*func TestGetAllTodoHandler(t *testing.T) {
+func TestGetAllTodoHandler(t *testing.T) {
+	setServerConfigForTest()
 	t.Run("get all todo", func(t *testing.T) {
 		request, _ := http.NewRequest(http.MethodGet, "/", nil)
 		response := httptest.NewRecorder()
@@ -40,6 +47,7 @@ func TestHealthHandler(t *testing.T) {
 }
 
 func TestAddTodoHandler(t *testing.T) {
+	setServerConfigForTest()
 	t.Run("add todo", func(t *testing.T) {
 		for _, v := range addTests {
 			request, _ := http.NewRequest(http.MethodPost, "/add", strings.NewReader(fmt.Sprintf("item=%s", v)))
@@ -53,4 +61,4 @@ func TestAddTodoHandler(t *testing.T) {
 			}
 		}
 	})
-}*/
+}

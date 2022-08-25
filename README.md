@@ -10,4 +10,5 @@ Web Based ToDo List Application for Modanisa
 ## For Developers
  - installation golang 
  - installation protoc
+ - docker token
  
