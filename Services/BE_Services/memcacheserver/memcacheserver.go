@@ -26,7 +26,7 @@ var (
 
 var (
 	cachedItems itempb.PbItems
-	chItem      chan itempb.PbItem
+	chItem      chan string
 )
 
 var (
@@ -50,7 +50,7 @@ func init() {
 
 func main() {
 
-	chItem = make(chan itempb.PbItem)
+	chItem = make(chan string)
 
 	wg.Add(3)
 	go storeValues()
@@ -95,9 +95,6 @@ func (s *itemPbServer) RpcItem(ctx context.Context, in *itempb.PbItem) (*itempb.
 
 	var pbResp itempb.PbResp
 
-	log.Println("RpcItem : ")
-	log.Println(in)
-
 	sleepASecond()
 
 	//Check if the value is empty
@@ -116,7 +113,7 @@ func (s *itemPbServer) RpcItem(ctx context.Context, in *itempb.PbItem) (*itempb.
 			}
 		}
 		if !isExist {
-			chItem <- *in
+			chItem <- in.Value
 			pbResp.Message = "SUCCESS"
 		} else {
 			pbResp.IsErr = true
@@ -124,7 +121,6 @@ func (s *itemPbServer) RpcItem(ctx context.Context, in *itempb.PbItem) (*itempb.
 		}
 	}
 
-	log.Println(pbResp)
 	return &pbResp, nil
 }
 
@@ -133,8 +129,6 @@ func (s *itemPbServer) RpcItem(ctx context.Context, in *itempb.PbItem) (*itempb.
 func (s *itemPbServer) RpcItems(ctx context.Context, in *itempb.PbReq) (*itempb.PbItems, error) {
 
 	sleepASecond()
-	log.Println("RpcItems : ")
-	log.Println(cachedItems)
 	return &cachedItems, nil
 }
 
@@ -151,8 +145,6 @@ func sleepASecond() {
 func storeValues() {
 
 	for newItem := range chItem {
-		cachedItems.Items = append(cachedItems.Items, &itempb.PbItem{Value: newItem.Value})
-		log.Println("Stored Values : ")
-		log.Println(cachedItems)
+		cachedItems.Items = append(cachedItems.Items, &itempb.PbItem{Value: newItem})
 	}
 }

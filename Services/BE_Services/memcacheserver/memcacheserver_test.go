@@ -41,8 +41,9 @@ func TestAddTodo(t *testing.T) {
 		}
 		defer conn.Close()
 		client := itempb.NewSvcItemClient(conn)
-		for _, v := range addTests {
-			resp, err := client.RpcItem(ctx, &v)
+		for i := 0; i < len(addTests); i++ {
+			v := addTests[i].Value
+			resp, err := client.RpcItem(ctx, &itempb.PbItem{Value: v})
 			if err != nil {
 				t.Errorf("RpcItem failed: %v", err)
 			}
