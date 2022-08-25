@@ -5,12 +5,12 @@ LABEL maintainer="Hüsamettin ARABACI <husamettin.arabaci@hsmteknoloji.com>"
 
 WORKDIR /app
 
-COPY go.mod ./
-COPY go.sum ./
+COPY ./Services/BE_Services/memcacheserver/go.mod ./
+COPY ./Services/BE_Services/memcacheserver/go.sum ./
 
 RUN go mod download
 
-COPY *.go ./
+COPY ./Services/BE_Services/memcacheserver/*.go ./
 
 RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o memcacheserver .
 
