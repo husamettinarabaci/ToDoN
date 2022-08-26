@@ -1,0 +1,156 @@
+name: Web Server Audit
+
+on:
+  push:
+    tags:
+      - '*-web'
+
+env:
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  AWS_REGION: ${{ secrets.AWS_REGION }}
+  KUBE_NAMESPACE: todon-test
+  KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./Services/FE_Services/webserver
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Go
+      uses: actions/setup-go@v2
+      with:
+        go-version: 1.19
+    - name: Build
+      run: go build -v ./...
+    - name: Run go vet
+      run: go vet ./...
+    - name: Install staticcheck
+      run: go install honnef.co/go/tools/cmd/staticcheck@latest
+    - name: Run staticcheck
+      run: staticcheck ./...
+    - name: Install golint
+      run: go install golang.org/x/lint/golint@latest
+    - name: Run golint
+      run: golint ./...
+    - name: Run tests
+      run: go test -vet=off ./...
+
+  test-build:
+    runs-on: ubuntu-latest
+    needs: audit
+    steps:
+      - name: Check Out Repo 
+        uses: actions/checkout@v2
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+
+      - name: Set up Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Build and push
+        id: docker_build
+        uses: docker/build-push-action@v2
+        with:
+          context: ./
+          file: ./Configs/DockerFiles/Dockerfile_webserver
+          push: true
+          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/webserver_test:latest
+
+      - name: Image digest
+        run: echo ${{ steps.docker_build.outputs.digest }}
+
+  test-deploy:
+    runs-on: ubuntu-latest
+    needs: test-build
+    steps:
+    - name: Clone
+      uses: actions/checkout@v2
+
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ env.AWS_ACCESS_KEY_ID }}        
+        aws-secret-access-key: ${{ env.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ env.AWS_REGION }}
+      
+    - name: Deploy to Kubernetes Cluster                                                                            
+      uses: kodermax/kubectl-aws-eks@master                                                                         
+      env:                                                                                                          
+        RELEASE_IMAGE: ${{ secrets.DOCKER_HUB_USERNAME }}/webserver_test:latest
+        KUBE_CONFIG_DATA: ${{ env.KUBE_CONFIG_DATA }}
+      with:                                                                                                         
+        args: set image deployment/webserver-test-deployment webserver-test=${{ env.RELEASE_IMAGE }} --record -n $KUBE_NAMESPACE
+    
+    - name: Verify Kubernetes Deployment                               
+      uses: kodermax/kubectl-aws-eks@master   
+      env:
+        KUBE_CONFIG_DATA: ${{ env.KUBE_CONFIG_DATA }}                         
+      with:                                                            
+        args: rollout restart deployment/webserver-test-deployment -n $KUBE_NAMESPACE
+
+  prod-build:
+    runs-on: ubuntu-latest
+    needs: test-deploy
+    steps:
+      - name: Check Out Repo 
+        uses: actions/checkout@v2
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+
+      - name: Set up Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Build and push
+        id: docker_build
+        uses: docker/build-push-action@v2
+        with:
+          context: ./
+          file: ./Configs/DockerFiles/Dockerfile_webserver
+          push: true
+          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/webserver_prod:latest
+
+      - name: Image digest
+        run: echo ${{ steps.docker_build.outputs.digest }}
+
+  prod-deploy:
+    runs-on: ubuntu-latest
+    needs: prod-build
+    steps:
+    - name: Clone
+      uses: actions/checkout@v2
+
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ env.AWS_ACCESS_KEY_ID }}        
+        aws-secret-access-key: ${{ env.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ env.AWS_REGION }}
+      
+    - name: Deploy to Kubernetes Cluster                                                                            
+      uses: kodermax/kubectl-aws-eks@master                                                                         
+      env:                                                                                                          
+        RELEASE_IMAGE: ${{ secrets.DOCKER_HUB_USERNAME }}/webserver_prod:latest
+        KUBE_CONFIG_DATA: ${{ env.KUBE_CONFIG_DATA }}
+      with:                                                                                                         
+        args: set image deployment/webserver-prod-deployment webserver-prod=${{ env.RELEASE_IMAGE }} --record -n $KUBE_NAMESPACE
+    
+    - name: Verify Kubernetes Deployment                               
+      uses: kodermax/kubectl-aws-eks@master   
+      env:
+        KUBE_CONFIG_DATA: ${{ env.KUBE_CONFIG_DATA }}                         
+      with:                                                            
+        args: rollout restart deployment/webserver-prod-deployment -n $KUBE_NAMESPACE 
