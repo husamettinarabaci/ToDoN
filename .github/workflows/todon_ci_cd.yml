@@ -67,6 +67,9 @@ jobs:
       - name: Set up Docker Buildx
         id: buildx
         uses: docker/setup-buildx-action@v1
+      
+      - name: Echo Tags
+        run: echo ${{ steps.meta.outputs.tags }}
 
       - name: Build and push
         id: docker_build
@@ -76,8 +79,7 @@ jobs:
           file: ./Configs/DockerFiles/Dockerfile_memcacheserver
           push: true
           tags: |
-            ${{ secrets.DOCKER_HUB_USERNAME }}/memcacheserver_test:${{steps.get-tags.outputs.tags }}
-            ${{ secrets.DOCKER_HUB_USERNAME }}/memcacheserver_test:latest
+            ${{ secrets.DOCKER_HUB_USERNAME }}/memcacheserver_test:${{ steps.meta.outputs.tags }}
 
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
