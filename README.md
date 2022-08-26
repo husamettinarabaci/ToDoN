@@ -12,6 +12,7 @@ Web Based ToDo List Application for Modanisa
  - installation protoc
  - github secrets
  - folder structere
+ - git tag usage
 
 
 Namespace
