@@ -16,7 +16,7 @@ var addTests = []string{
 }
 
 func setServerConfigForTest() {
-	memcacheServerIP = "a7eaec74ead004ed0b6ca02c8f58b326-1782140111.eu-central-1.elb.amazonaws.com"
+	memcacheServerIP = "a06cfcc7dfbca4c829963fcf485472bb-53359176.eu-central-1.elb.amazonaws.com"
 }
 
 func TestHealthHandler(t *testing.T) {
