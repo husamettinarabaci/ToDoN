@@ -1,13 +1,14 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: webserver-test-loadbalancer
+  namespace: todon-prod
+  name: webserver-prod-loadbalancer
 spec:
   type: LoadBalancer
   selector:
-    app: webserver-test
+    app: webserver-prod
   ports:
     - name: httplistener
       port: 80
       targetPort: 80
-      nodePort: 30084
+      nodePort: 30088

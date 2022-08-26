@@ -1,9 +1,0 @@
-
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: memcacheserver-config
-  labels:
-    app: memcacheserver-config
-data:
-  SERVER_PORT: "33800"

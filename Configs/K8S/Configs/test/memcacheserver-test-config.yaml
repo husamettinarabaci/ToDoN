@@ -1,0 +1,10 @@
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: todon-test
+  name: memcacheserver-test-config
+  labels:
+    app: memcacheserver-test-config
+data:
+  SERVER_PORT: "33800"

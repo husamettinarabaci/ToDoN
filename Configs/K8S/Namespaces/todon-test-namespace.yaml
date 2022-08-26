@@ -1,0 +1,6 @@
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: todon-test
+  labels:
+    name: todon-test

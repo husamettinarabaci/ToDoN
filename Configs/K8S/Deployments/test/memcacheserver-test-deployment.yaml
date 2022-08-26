@@ -2,26 +2,27 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: memcacheserver-deployment
+  namespace: todon-test
+  name: memcacheserver-test-deployment
   labels:
-    app: memcacheserver
+    app: memcacheserver-test
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: memcacheserver
+      app: memcacheserver-test
   template:
     metadata:
       labels:
-        app: memcacheserver
+        app: memcacheserver-test
     spec:
       containers:
-      - name: memcacheserver
-        image: devhsmtek/memcacheserver:latest
+      - name: memcacheserver-test
+        image: devhsmtek/memcacheserver_test:latest
         imagePullPolicy: "Always"
         envFrom:
           - configMapRef:
-              name: memcacheserver-config
+              name: memcacheserver-test-config
         ports:
         - containerPort: 80
         livenessProbe:

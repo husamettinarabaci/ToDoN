@@ -1,13 +1,14 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: memcacheserver-loadbalancer
+  namespace: todon-prod
+  name: memcacheserver-prod-loadbalancer
 spec:
   type: LoadBalancer
   selector:
-    app: memcacheserver
+    app: memcacheserver-prod
   ports:
     - name: grpclistener
       port: 33800
       targetPort: 33800
-      nodePort: 30083
+      nodePort: 30087

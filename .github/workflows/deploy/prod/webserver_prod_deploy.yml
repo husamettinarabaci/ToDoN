@@ -1,0 +1,39 @@
+name: Web Server Prod Deploy - EKS
+
+on: [workflow_dispatch]
+
+env:
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  AWS_REGION: ${{ secrets.AWS_REGION }}
+  KUBE_NAMESPACE: todon-prod
+  KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Clone
+      uses: actions/checkout@v2
+
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ env.AWS_ACCESS_KEY_ID }}        
+        aws-secret-access-key: ${{ env.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ env.AWS_REGION }}
+      
+    - name: Deploy to Kubernetes Cluster                                                                            
+      uses: kodermax/kubectl-aws-eks@master                                                                         
+      env:                                                                                                          
+        RELEASE_IMAGE: ${{ secrets.DOCKER_HUB_USERNAME }}/webserver_prod:latest
+        KUBE_CONFIG_DATA: ${{ env.KUBE_CONFIG_DATA }}
+      with:                                                                                                         
+        args: set image deployment/webserver-prod-deployment webserver-prod=${{ env.RELEASE_IMAGE }} --record -n $KUBE_NAMESPACE
+    
+    - name: Verify Kubernetes Deployment                               
+      uses: kodermax/kubectl-aws-eks@master   
+      env:
+        KUBE_CONFIG_DATA: ${{ env.KUBE_CONFIG_DATA }}                         
+      with:                                                            
+        args: rollout restart deployment/webserver-prod-deployment -n $KUBE_NAMESPACE 

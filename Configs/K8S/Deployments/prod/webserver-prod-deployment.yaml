@@ -2,31 +2,32 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: webserver-test-deployment
+  namespace: todon-prod
+  name: webserver-prod-deployment
   labels:
-    app: webserver-test
+    app: webserver-prod
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
-      app: webserver-test
+      app: webserver-prod
   template:
     metadata:
       labels:
-        app: webserver-test
+        app: webserver-prod
     spec:
       initContainers:
       - name: wait-for-memcacheserver
         image: curlimages/curl:latest
         command: ["/bin/sh","-c"]
-        args: ["while [ $(curl -sw '%{http_code}' http://memcacheserver-clusterip/health -o /dev/null) -ne 200 ]; do sleep 5; echo 'Waiting for the memcacheserver...'; done"]
+        args: ["while [ $(curl -sw '%{http_code}' http://memcacheserver-prod-clusterip/health -o /dev/null) -ne 200 ]; do sleep 5; echo 'Waiting for the memcacheserver...'; done"]
       containers:
-      - name: webserver
-        image: devhsmtek/webserver:latest
+      - name: webserver-prod
+        image: devhsmtek/webserver_prod:latest
         imagePullPolicy: "Always"
         envFrom:
           - configMapRef:
-              name: webserver-config
+              name: webserver-prod-config
         ports:
         - containerPort: 80
         livenessProbe:

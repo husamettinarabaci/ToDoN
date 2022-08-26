@@ -1,4 +1,4 @@
-name: Mem-Cache Server Image Build
+name: Web Server Image Prod Build
 
 on: [workflow_dispatch]
 
@@ -24,9 +24,9 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: ./
-          file: ./Configs/DockerFiles/Dockerfile_memcacheserver
+          file: ./Configs/DockerFiles/Dockerfile_webserver
           push: true
-          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/memcacheserver:latest
+          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/webserver_prod:latest
 
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}

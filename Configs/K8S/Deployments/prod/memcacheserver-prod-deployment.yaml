@@ -1,0 +1,35 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: todon-prod
+  name: memcacheserver-prod-deployment
+  labels:
+    app: memcacheserver-prod
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: memcacheserver-prod
+  template:
+    metadata:
+      labels:
+        app: memcacheserver-prod
+    spec:
+      containers:
+      - name: memcacheserver-prod
+        image: devhsmtek/memcacheserver_prod:latest
+        imagePullPolicy: "Always"
+        envFrom:
+          - configMapRef:
+              name: memcacheserver-prod-config
+        ports:
+        - containerPort: 80
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 80
+            scheme: HTTP
+          initialDelaySeconds: 5
+          periodSeconds: 15
+          timeoutSeconds: 5

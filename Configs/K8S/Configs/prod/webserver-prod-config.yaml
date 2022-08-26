@@ -1,0 +1,11 @@
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: todon-prod
+  name: webserver-prod-config
+  labels:
+    app: webserver-prod-config
+data:
+  MEMCACHE_SERVER_IP: "memcacheserver-prod-clusterip"
+  MEMCACHE_SERVER_PORT: "33800"

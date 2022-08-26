@@ -1,0 +1,6 @@
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: todon-prod
+  labels:
+    name: todon-prod

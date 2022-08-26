@@ -12,10 +12,36 @@ Web Based ToDo List Application for Modanisa
  - installation protoc
  - docker token
  - github secrets
+ - folder structere
+
+
+Namespace
+- kubectl create -f Configs/K8S/Namespaces/todon-prod-namespace.yaml
+- kubectl create -f Configs/K8S/Namespaces/todon-test-namespace.yaml
+Config
+- kubectl create -f Configs/K8S/Configs/prod/memcacheserver-prod-config.yaml
+- kubectl create -f Configs/K8S/Configs/prod/webserver-prod-config.yaml 
+- kubectl create -f Configs/K8S/Configs/test/memcacheserver-test-config.yaml 
+- kubectl create -f Configs/K8S/Configs/test/webserver-test-config.yaml 
+Cluster IP
+- kubectl create -f Configs/K8S/ClusterIPs/prod/memcacheserver-prod-clusterip.yaml 
+- kubectl create -f Configs/K8S/ClusterIPs/test/memcacheserver-test-clusterip.yaml 
+LoadBalancer
+- kubectl create -f Configs/K8S/LoadBalancers/prod/memcacheserver-prod-loadbalancer.yaml 
+- kubectl create -f Configs/K8S/LoadBalancers/prod/webserver-prod-loadbalancer.yaml 
+- kubectl create -f Configs/K8S/LoadBalancers/test/memcacheserver-test-loadbalancer.yaml 
+- kubectl create -f Configs/K8S/LoadBalancers/test/webserver-test-loadbalancer.yaml 
+Deployment
+- kubectl create -f Configs/K8S/Deployments/prod/memcacheserver-prod-deployment.yaml
+- kubectl create -f Configs/K8S/Deployments/prod/webserver-prod-deployment.yaml 
+- kubectl create -f Configs/K8S/Deployments/test/memcacheserver-test-deployment.yaml 
+- kubectl create -f Configs/K8S/Deployments/test/webserver-test-deployment.yaml 
 
 
 
- memcahceserver LoadBalancer IP : a7eaec74ead004ed0b6ca02c8f58b326-1782140111.eu-central-1.elb.amazonaws.com
- webserver LoadBalancer IP : af91197f2bf044fc9ae2eb2997067a89-443727921.eu-central-1.elb.amazonaws.com
- webserver Test LoadBalancer IP : a8aaf6de32589498e906ea77aed2dcdf-694598619.eu-central-1.elb.amazonaws.com
- 
+ namespace todon-prod,todon-test
+
+ memcahceserver Prod LoadBalancer IP : ac871331e10a24d3fb1775da164f9258-2020354426.eu-central-1.elb.amazonaws.com
+ memcahceserver Test LoadBalancer IP : a06cfcc7dfbca4c829963fcf485472bb-53359176.eu-central-1.elb.amazonaws.com
+ webserver Prod LoadBalancer IP : aab6a856cd8984348b4e34a58610665f-1150680336.eu-central-1.elb.amazonaws.com
+ webserver Test LoadBalancer IP : a970bf7ee7cce4ea8be39748807dcc44-429638464.eu-central-1.elb.amazonaws.com
