@@ -3,7 +3,7 @@ package main
 import (
 	"context"
 	"encoding/json"
-	"io/ioutil"
+	"io"
 	"log"
 	"net/http"
 	"os"
@@ -99,7 +99,7 @@ func AddTodoHandler(w http.ResponseWriter, r *http.Request) {
 // AddTodoAPIHandler adds a new todo by api
 func AddTodoAPIHandler(w http.ResponseWriter, r *http.Request) {
 
-	reqBody, _ := ioutil.ReadAll(r.Body)
+	reqBody, _ := io.ReadAll(r.Body)
 	var reqData addData
 	json.Unmarshal(reqBody, &reqData)
 
