@@ -36,4 +36,4 @@ jobs:
       env:
         KUBE_CONFIG_DATA: ${{ env.KUBE_CONFIG_DATA }}                         
       with:                                                            
-        args: rollout status deployment/webserver-test-deployment -n $KUBE_NAMESPACE 
+        args: rollout restart deployment/webserver-test-deployment -n $KUBE_NAMESPACE 
