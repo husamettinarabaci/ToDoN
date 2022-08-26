@@ -11,6 +11,7 @@ env:
   KUBE_NAMESPACE_TEST: todon-test
   KUBE_NAMESPACE_PROD: todon-prod
   KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
+  RELEASE_NUMBER: v1.0.0
 
 jobs:
   set-env:
@@ -67,9 +68,6 @@ jobs:
       - name: Set up Docker Buildx
         id: buildx
         uses: docker/setup-buildx-action@v1
-      
-      - name: Echo Tags
-        run: echo ${{ env.RELEASE_NUMBER}}
 
       - name: Build and push
         id: docker_build
