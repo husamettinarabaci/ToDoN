@@ -259,9 +259,17 @@ jobs:
       with:                                                            
         args: rollout restart deployment/webserver-test-deployment -n $KUBE_NAMESPACE_TEST
 
-  web-prod-build:
+  web-test-api-cdc:
     runs-on: ubuntu-latest
     needs: web-test-deploy
+    steps:
+    - name: API CDC Test
+      uses: actions/checkout@v2
+      run: docker build -f ./Configs/DockerFiles/Dockerfile_webserver_apicdctest -t dredd . && docker image rm dredd
+
+  web-prod-build:
+    runs-on: ubuntu-latest
+    needs: [web-test-api-cdc, web-test-e2e]
     steps:
       - name: Check Out Repo 
         uses: actions/checkout@v2
