@@ -11,7 +11,7 @@ env:
   KUBE_NAMESPACE_TEST: todon-test
   KUBE_NAMESPACE_PROD: todon-prod
   KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
-  RELEASE_NUMBER: ${{ steps.vars.outputs.tag }}
+  RELEASE_NUMBER: ${GITHUB_REF##*/}
 
 jobs:
   memcache-audit:
