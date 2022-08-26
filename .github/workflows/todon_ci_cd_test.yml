@@ -9,8 +9,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: ech
-      run: echo "ls"
-      
+      run: "ls -la"
+
     - name: API CDC Test
       working-directory: '/Configs/DockerFiles'
       run: docker build -f Dockerfile_webserver_apicdctest -t dredd . && docker image rm dredd
