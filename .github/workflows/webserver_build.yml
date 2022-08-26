@@ -1,4 +1,4 @@
-name: Web-Cache Server Build
+name: Web Server Build
 
 on: [workflow_dispatch]
 
