@@ -1,16 +1,14 @@
 name: ToDoN CI/CD
 
 on:
-  push:
-    branch: [ main ]
+  push: [ main ]
 
 jobs:
   web-test-api-cdc:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./Configs/DockerFiles
     steps:
     - name: API CDC Test
-      run: |
-        ls Configs/DockerFiles
-        cd Configs/DockerFiles
-        pwd
-        docker build -f Dockerfile_webserver_apicdctest -t dredd . && docker image rm dredd
+      run: docker build -f Dockerfile_webserver_apicdctest -t dredd . && docker image rm dredd
