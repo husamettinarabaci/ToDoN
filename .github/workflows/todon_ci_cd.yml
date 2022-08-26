@@ -18,11 +18,11 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Set env
-        run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
-      - name: Test
+        run: echo "RELEASE_NUMBER=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+      - name: Echo Release Number
         run: |
-          echo $RELEASE_VERSION
-          echo ${{ env.RELEASE_VERSION }}
+          echo $RELEASE_NUMBER
+          echo ${{ env.RELEASE_NUMBER }}
 
   memcache-audit:
     runs-on: ubuntu-latest
