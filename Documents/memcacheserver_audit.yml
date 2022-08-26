@@ -1,4 +1,4 @@
-name: Mem-Cache Server Audit
+name: Mem-Cache Server CI/CD
 
 on:
   push:
