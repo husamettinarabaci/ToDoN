@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./Configs/DockerFiles
+        working-directory: /Configs/DockerFiles
     steps:
     - name: API CDC Test
       run: docker build -f Dockerfile_webserver_apicdctest -t dredd . && docker image rm dredd
