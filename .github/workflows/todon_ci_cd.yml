@@ -264,7 +264,6 @@ jobs:
     needs: web-test-deploy
     steps:
     - name: API CDC Test
-      uses: actions/checkout@v2
       run: docker build -f ./Configs/DockerFiles/Dockerfile_webserver_apicdctest -t dredd . && docker image rm dredd
 
   web-prod-build:
