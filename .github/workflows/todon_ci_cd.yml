@@ -262,9 +262,13 @@ jobs:
   web-test-api-cdc:
     runs-on: ubuntu-latest
     needs: web-test-deploy
+    defaults:
+      run:
+        working-directory: ./Configs/DockerFiles
     steps:
+    - uses: actions/checkout@v2
+
     - name: API CDC Test
-      working-directory: 'Configs/DockerFiles'
       run: docker build -f Dockerfile_webserver_apicdctest -t dredd . && docker image rm dredd
 
   web-prod-build:
