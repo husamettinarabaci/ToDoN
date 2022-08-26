@@ -2,14 +2,14 @@ name: ToDoN CI/CD
 
 on:
   push:
-    tags:
-      - '*'
+    tags: [ v* ]
 
 env:
   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
   AWS_REGION: ${{ secrets.AWS_REGION }}
-  KUBE_NAMESPACE: todon-test
+  KUBE_NAMESPACE_TEST: todon-test
+  KUBE_NAMESPACE_PROD: todon-prod
   KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
 
 jobs:
@@ -63,7 +63,7 @@ jobs:
           context: ./
           file: ./Configs/DockerFiles/Dockerfile_memcacheserver
           push: true
-          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/memcacheserver_test:latest
+          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/memcacheserver_test:${{ steps.docker_tags.outputs.tags }}
 
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
@@ -85,17 +85,17 @@ jobs:
     - name: Deploy to Kubernetes Cluster                                                                            
       uses: kodermax/kubectl-aws-eks@master                                                                         
       env:                                                                                                          
-        RELEASE_IMAGE: ${{ secrets.DOCKER_HUB_USERNAME }}/memcacheserver_test:latest
+        RELEASE_IMAGE: ${{ secrets.DOCKER_HUB_USERNAME }}/memcacheserver_test:${{ steps.docker_tags.outputs.tags }}
         KUBE_CONFIG_DATA: ${{ env.KUBE_CONFIG_DATA }}
       with:                                                                                                         
-        args: set image deployment/memcacheserver-test-deployment memcacheserver-test=${{ env.RELEASE_IMAGE }} --record -n $KUBE_NAMESPACE
+        args: set image deployment/memcacheserver-test-deployment memcacheserver-test=${{ env.RELEASE_IMAGE }} --record -n $KUBE_NAMESPACE_TEST
     
     - name: Verify Kubernetes Deployment                               
       uses: kodermax/kubectl-aws-eks@master   
       env:
         KUBE_CONFIG_DATA: ${{ env.KUBE_CONFIG_DATA }}                         
       with:                                                            
-        args: rollout restart deployment/memcacheserver-test-deployment -n $KUBE_NAMESPACE 
+        args: rollout restart deployment/memcacheserver-test-deployment -n $KUBE_NAMESPACE_TEST
 
   memcache-prod-build:
     runs-on: ubuntu-latest
@@ -121,7 +121,7 @@ jobs:
           context: ./
           file: ./Configs/DockerFiles/Dockerfile_memcacheserver
           push: true
-          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/memcacheserver_prod:latest
+          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/memcacheserver_prod:${{ steps.docker_tags.outputs.tags }}
 
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
@@ -143,17 +143,17 @@ jobs:
     - name: Deploy to Kubernetes Cluster                                                                            
       uses: kodermax/kubectl-aws-eks@master                                                                         
       env:                                                                                                          
-        RELEASE_IMAGE: ${{ secrets.DOCKER_HUB_USERNAME }}/memcacheserver_prod:latest
+        RELEASE_IMAGE: ${{ secrets.DOCKER_HUB_USERNAME }}/memcacheserver_prod:${{ steps.docker_tags.outputs.tags }}
         KUBE_CONFIG_DATA: ${{ env.KUBE_CONFIG_DATA }}
       with:                                                                                                         
-        args: set image deployment/memcacheserver-prod-deployment memcacheserver-prod=${{ env.RELEASE_IMAGE }} --record -n $KUBE_NAMESPACE
+        args: set image deployment/memcacheserver-prod-deployment memcacheserver-prod=${{ env.RELEASE_IMAGE }} --record -n $KUBE_NAMESPACE_PROD
     
     - name: Verify Kubernetes Deployment                               
       uses: kodermax/kubectl-aws-eks@master   
       env:
         KUBE_CONFIG_DATA: ${{ env.KUBE_CONFIG_DATA }}                         
       with:                                                            
-        args: rollout restart deployment/memcacheserver-prod-deployment -n $KUBE_NAMESPACE 
+        args: rollout restart deployment/memcacheserver-prod-deployment -n $KUBE_NAMESPACE_PROD
 
   web-audit:
     runs-on: ubuntu-latest
@@ -206,7 +206,7 @@ jobs:
           context: ./
           file: ./Configs/DockerFiles/Dockerfile_webserver
           push: true
-          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/webserver_test:latest
+          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/webserver_test:${{ steps.docker_tags.outputs.tags }}
 
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
@@ -228,17 +228,17 @@ jobs:
     - name: Deploy to Kubernetes Cluster                                                                            
       uses: kodermax/kubectl-aws-eks@master                                                                         
       env:                                                                                                          
-        RELEASE_IMAGE: ${{ secrets.DOCKER_HUB_USERNAME }}/webserver_test:latest
+        RELEASE_IMAGE: ${{ secrets.DOCKER_HUB_USERNAME }}/webserver_test:${{ steps.docker_tags.outputs.tags }}
         KUBE_CONFIG_DATA: ${{ env.KUBE_CONFIG_DATA }}
       with:                                                                                                         
-        args: set image deployment/webserver-test-deployment webserver-test=${{ env.RELEASE_IMAGE }} --record -n $KUBE_NAMESPACE
+        args: set image deployment/webserver-test-deployment webserver-test=${{ env.RELEASE_IMAGE }} --record -n $KUBE_NAMESPACE_TEST
     
     - name: Verify Kubernetes Deployment                               
       uses: kodermax/kubectl-aws-eks@master   
       env:
         KUBE_CONFIG_DATA: ${{ env.KUBE_CONFIG_DATA }}                         
       with:                                                            
-        args: rollout restart deployment/webserver-test-deployment -n $KUBE_NAMESPACE
+        args: rollout restart deployment/webserver-test-deployment -n $KUBE_NAMESPACE_TEST
 
   web-prod-build:
     runs-on: ubuntu-latest
@@ -264,7 +264,7 @@ jobs:
           context: ./
           file: ./Configs/DockerFiles/Dockerfile_webserver
           push: true
-          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/webserver_prod:latest
+          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/webserver_prod:${{ steps.docker_tags.outputs.tags }}
 
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
@@ -286,14 +286,14 @@ jobs:
     - name: Deploy to Kubernetes Cluster                                                                            
       uses: kodermax/kubectl-aws-eks@master                                                                         
       env:                                                                                                          
-        RELEASE_IMAGE: ${{ secrets.DOCKER_HUB_USERNAME }}/webserver_prod:latest
+        RELEASE_IMAGE: ${{ secrets.DOCKER_HUB_USERNAME }}/webserver_prod:${{ steps.docker_tags.outputs.tags }}
         KUBE_CONFIG_DATA: ${{ env.KUBE_CONFIG_DATA }}
       with:                                                                                                         
-        args: set image deployment/webserver-prod-deployment webserver-prod=${{ env.RELEASE_IMAGE }} --record -n $KUBE_NAMESPACE
+        args: set image deployment/webserver-prod-deployment webserver-prod=${{ env.RELEASE_IMAGE }} --record -n $KUBE_NAMESPACE_PROD
     
     - name: Verify Kubernetes Deployment                               
       uses: kodermax/kubectl-aws-eks@master   
       env:
         KUBE_CONFIG_DATA: ${{ env.KUBE_CONFIG_DATA }}                         
       with:                                                            
-        args: rollout restart deployment/webserver-prod-deployment -n $KUBE_NAMESPACE 
+        args: rollout restart deployment/webserver-prod-deployment -n $KUBE_NAMESPACE_PROD
