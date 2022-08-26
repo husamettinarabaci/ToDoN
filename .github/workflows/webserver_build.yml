@@ -1,4 +1,4 @@
-name: Mem-Cache Server Build
+name: Web-Cache Server Build
 
 on: [workflow_dispatch]
 
