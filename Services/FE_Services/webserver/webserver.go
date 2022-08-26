@@ -2,6 +2,8 @@ package main
 
 import (
 	"context"
+	"encoding/json"
+	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
@@ -53,7 +55,9 @@ func main() {
 // This function creates a new http-server and listens it
 func createHTTPServer() {
 	http.HandleFunc("/", GetAllTodoHandler)
+	http.HandleFunc("/api/v1/all", GetAllTodoAPIHandler)
 	http.HandleFunc("/add", AddTodoHandler)
+	http.HandleFunc("/api/v1/add", AddTodoAPIHandler)
 	http.HandleFunc("/health", HealthHandler)
 	log.Println("Server listening at :80")
 	err := http.ListenAndServe(":80", nil)
@@ -92,6 +96,44 @@ func AddTodoHandler(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, "/", http.StatusMovedPermanently)
 }
 
+// AddTodoAPIHandler adds a new todo by api
+func AddTodoAPIHandler(w http.ResponseWriter, r *http.Request) {
+
+	reqBody, _ := ioutil.ReadAll(r.Body)
+	var reqData addData
+	json.Unmarshal(reqBody, &reqData)
+
+	conn, err := grpc.Dial(memcacheServerIP+":"+memcacheServerPort, grpc.WithTransportCredentials(insecure.NewCredentials()))
+	if err != nil {
+		panic(err)
+	}
+	defer conn.Close()
+	client := itempb.NewSvcItemClient(conn)
+	resp, err := client.RPCItem(context.Background(), &itempb.PbItem{Value: reqData.Item})
+	if err != nil {
+		panic(err)
+	}
+
+	var message string = ""
+	if resp.Message == "SUCCESS" {
+		message = "OK"
+		log.Println("Todo value is added")
+	} else if resp.IsErr {
+		message = "OK"
+		log.Printf("Todo value can't add : %v\n", resp.Error)
+	} else {
+		message = "FAIL"
+		log.Println("RpcItem failed")
+	}
+
+	data := viewDatas{
+		Todos:   make([]string, 0),
+		Message: message,
+	}
+
+	json.NewEncoder(w).Encode(data)
+}
+
 // GetAllTodoHandler returns all todo values
 func GetAllTodoHandler(w http.ResponseWriter, r *http.Request) {
 
@@ -114,12 +156,47 @@ func GetAllTodoHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	data := viewDatas{
-		Todos: todos,
+		Todos:   todos,
+		Message: "",
 	}
 
 	_ = indexView.Execute(w, data)
 }
 
+// GetAllTodoAPIHandler returns all todo values by api
+func GetAllTodoAPIHandler(w http.ResponseWriter, r *http.Request) {
+
+	conn, err := grpc.Dial(memcacheServerIP+":"+memcacheServerPort, grpc.WithTransportCredentials(insecure.NewCredentials()))
+	if err != nil {
+		panic(err)
+	}
+	defer conn.Close()
+	client := itempb.NewSvcItemClient(conn)
+	resp, err := client.RPCItems(context.Background(), &itempb.PbReq{})
+	if err != nil {
+		panic(err)
+	}
+	todos := make([]string, 0)
+
+	if resp.Items != nil {
+		for _, v := range resp.Items {
+			todos = append(todos, v.Value)
+		}
+	}
+
+	data := viewDatas{
+		Todos:   todos,
+		Message: "",
+	}
+
+	json.NewEncoder(w).Encode(data)
+}
+
 type viewDatas struct {
-	Todos []string
+	Todos   []string
+	Message string
+}
+
+type addData struct {
+	Item string
 }
