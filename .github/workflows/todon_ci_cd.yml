@@ -75,7 +75,9 @@ jobs:
           context: ./
           file: ./Configs/DockerFiles/Dockerfile_memcacheserver
           push: true
-          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/memcacheserver_test:${{ steps.vars.outputs.tag }}
+          tags: |
+            ${{ secrets.DOCKER_HUB_USERNAME }}/memcacheserver_test:${{steps.get-tags.outputs.tags }}
+            ${{ secrets.DOCKER_HUB_USERNAME }}/memcacheserver_test:latest
 
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
