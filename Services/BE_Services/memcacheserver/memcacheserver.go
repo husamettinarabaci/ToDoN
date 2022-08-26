@@ -75,6 +75,7 @@ func StartApp() {
 // This server is used for probe by K8S
 func createHTTPServer() {
 	http.HandleFunc("/health", HealthHandler)
+	log.Println("Server listening at :80")
 	http.ListenAndServe(":80", nil)
 }
 
