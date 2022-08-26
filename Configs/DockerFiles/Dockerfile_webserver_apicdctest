@@ -1,4 +1,0 @@
-FROM node:lts-alpine
-RUN npm install dredd --global
-COPY /Configs/Tests/webserver_apicdctest_config.apib ./
-RUN dredd webserver_apicdctest_config.apib http://a970bf7ee7cce4ea8be39748807dcc44-429638464.eu-central-1.elb.amazonaws.com
