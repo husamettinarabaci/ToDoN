@@ -15,7 +15,6 @@ env:
 jobs:
   memcache-audit:
     runs-on: ubuntu-latest
-    needs: set-env
     defaults:
       run:
         working-directory: ./Services/BE_Services/memcacheserver
