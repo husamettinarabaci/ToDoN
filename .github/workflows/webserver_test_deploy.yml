@@ -26,5 +26,6 @@ jobs:
       uses: kodermax/kubectl-aws-eks@master                                                                         
       env:                                                                                                          
         RELEASE_IMAGE: ${{ secrets.DOCKER_HUB_USERNAME }}/webserver:latest
+        KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
       with:                                                                                                         
         args: set image deployment/webserver-test-deployment app=webserver-test --record -n $KUBE_NAMESPACE   
