@@ -1,4 +1,4 @@
-name: Web Server Test
+name: Web Server Audit
 
 on:
   push:

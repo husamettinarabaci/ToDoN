@@ -1,4 +1,4 @@
-name: Web Server Build
+name: Web Server Image Build
 
 on: [workflow_dispatch]
 

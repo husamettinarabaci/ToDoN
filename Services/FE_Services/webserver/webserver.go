@@ -56,6 +56,7 @@ func createHTTPServer() {
 	http.HandleFunc("/add", AddTodoHandler)
 	http.HandleFunc("/health", HealthHandler)
 	err := http.ListenAndServe(":80", nil)
+	log.Println("Server listening at :80")
 	if err != nil {
 		panic(err)
 	}

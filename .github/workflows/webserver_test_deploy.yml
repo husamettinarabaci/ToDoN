@@ -1,4 +1,4 @@
-name: Web Server Test Deploy
+name: Web Server Test Deploy - EKS
 
 on: [workflow_dispatch]
 
@@ -7,6 +7,7 @@ env:
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
   AWS_REGION: ${{ secrets.AWS_REGION }}
   KUBE_NAMESPACE: default
+  KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
 
 jobs:
   build:
@@ -15,17 +16,24 @@ jobs:
     - name: Clone
       uses: actions/checkout@v2
 
-    - name: Configure AWS credentials
+    - name: Configure AWS Credentials
       uses: aws-actions/configure-aws-credentials@v1
       with:
         aws-access-key-id: ${{ env.AWS_ACCESS_KEY_ID }}        
         aws-secret-access-key: ${{ env.AWS_SECRET_ACCESS_KEY }}
         aws-region: ${{ env.AWS_REGION }}
       
-    - name: Deploy to Kubernetes cluster                                                                            
+    - name: Deploy to Kubernetes Cluster                                                                            
       uses: kodermax/kubectl-aws-eks@master                                                                         
       env:                                                                                                          
         RELEASE_IMAGE: ${{ secrets.DOCKER_HUB_USERNAME }}/webserver:latest
-        KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
+        KUBE_CONFIG_DATA: ${{ env.KUBE_CONFIG_DATA }}
       with:                                                                                                         
-        args: set image deployment/webserver-test-deployment webserver=${{ env.RELEASE_IMAGE }} --record -n $KUBE_NAMESPACE   
+        args: set image deployment/webserver-test-deployment webserver=${{ env.RELEASE_IMAGE }} --record -n $KUBE_NAMESPACE
+    
+    - name: Verify Kubernetes Deployment                               
+      uses: kodermax/kubectl-aws-eks@master   
+      env:
+        KUBE_CONFIG_DATA: ${{ env.KUBE_CONFIG_DATA }}                         
+      with:                                                            
+        args: rollout status deployment/webserver-test-deployment -n $KUBE_NAMESPACE 

@@ -1,4 +1,4 @@
-name: Mem-Cache Server Build
+name: Mem-Cache Server Image Build
 
 on: [workflow_dispatch]
 
