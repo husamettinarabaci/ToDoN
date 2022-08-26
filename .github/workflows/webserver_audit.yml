@@ -2,7 +2,8 @@ name: Web Server Audit
 
 on:
   push:
-    branches: [main]
+    tags:
+      - '*-web'
 
 jobs:
   audit:
