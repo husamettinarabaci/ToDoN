@@ -19,15 +19,15 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Set env
-        run: run: echo "::set-env name=RELEASE_NUMBER::${GITHUB_REF#refs/*/}"
-        
+        run: echo "::set-env name=RELEASE_NUMBER::${GITHUB_REF#refs/*/}"
+
   echo-env:
     runs-on: ubuntu-latest
     needs: set-env
     steps:
       - uses: actions/checkout@v2
       - name: Echo Release Number
-        run: ${{ env.RELEASE_NUMBER }}
+        run: echo ${{ env.RELEASE_NUMBER }}
 
   memcache-audit:
     runs-on: ubuntu-latest
