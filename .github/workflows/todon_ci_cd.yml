@@ -266,6 +266,13 @@ jobs:
     - name: API CDC Test
       run: docker build -f ./Configs/DockerFiles/Dockerfile_webserver_apicdctest -t dredd . && docker image rm dredd
 
+  web-test-e2e:
+    runs-on: ubuntu-latest
+    needs: web-test-deploy
+    steps:
+    - name: API E2E Test
+      run: docker build -f ./Configs/DockerFiles/Dockerfile_webserver_apicdctest -t dredd . && docker image rm dredd
+
   web-prod-build:
     runs-on: ubuntu-latest
     needs: [web-test-api-cdc, web-test-e2e]
