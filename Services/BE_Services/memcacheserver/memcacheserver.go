@@ -69,6 +69,8 @@ func StartApp() {
 	go storeValues()
 	go CreategRPCServer()
 	go createHTTPServer()
+
+	time.Sleep(time.Second * 5)
 }
 
 // createHTTPServer creates a new http-server and listens it
