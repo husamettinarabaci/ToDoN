@@ -1,7 +1,8 @@
 name: ToDoN CI/CD
 
 on:
-  push: [ main ]
+  push:
+    branches: [ main ]
 
 jobs:
   web-test-api-cdc:
