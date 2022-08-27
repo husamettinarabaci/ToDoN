@@ -5,7 +5,7 @@
 
 Bu uygulama web tabanlı bir Todo List uygulamasıdır.
 
-## Screenshots
+##
 
 ![App Screenshot](./Documents/Images/webpage.png)
 
