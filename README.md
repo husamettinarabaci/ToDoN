@@ -3,7 +3,7 @@
 
 # ToDoN
 
-Bu uygulama web tabanlı bir Todo List uygulamasıdır.
+Web Based ToDo List Application
 
 ##
 
