@@ -2,16 +2,55 @@ FORMAT: 1A
 
 # Todo
 
+Todo is a simple API allowing users they can keep track of your tasks need to be done.
+
 # Group Todos
 
-## Todo List [/]
+Resources related to todos in the API.
 
-- item
+## Todo Collection [/api/v1/all]
+
+A Todo object has the following attributes.
+
+- Item
 
 ### List All Todos [GET]
 
-+ Request (text/html)
-
-+ Response 200 (text/html)
++ Response 200 (application/json)
     + Headers
-        content-type: text/html; charset=utf-8
+        content-type: text/plain; charset=utf-8
+    + Body
+        {
+            "Todos": [
+                "Wake up",
+                "Prepare breakfast",
+                "Get dressed",
+                "Go to work",
+                "My New Task"
+              ],
+              "Message": ""
+        }
+
+## Todo [/api/v1/add]
+
+Resources related to single Todo Model.
+
+### Create a new todo [POST]
+
+You can create todo using this action. It takes a JSON object containing task_description.
+
++ Item (string)
+
++ Request (application/json)
+    {
+        "Item": "My New Task"
+    }
++ Response 200 (application/json)
+    + Headers
+        content-type: text/plain; charset=utf-8
+    + Body {
+         {
+            "Todos": [],
+            "Message": "OK"
+        }
+    }
