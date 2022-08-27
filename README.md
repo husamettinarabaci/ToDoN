@@ -181,7 +181,7 @@ To deploy this project run
   git push --tags
 ```
 
-From this process, the following happens automatically:
+After this action, the following events occur automatically:
 - Docker Image Build && Push : (DOCKER_HUB_USERNAME)/memcacheserver_test:v2.0.0
 - Docker Image Build && Push : (DOCKER_HUB_USERNAME)/memcacheserver_prod:v2.0.0
 - Docker Image Build && Push : (DOCKER_HUB_USERNAME)/webserver_test:v2.0.0
