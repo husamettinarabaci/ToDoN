@@ -11,6 +11,7 @@ env:
   KUBE_NAMESPACE_TEST: todon-test
   KUBE_NAMESPACE_PROD: todon-prod
   KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
+  MEMCACHE_TEST_SERVER_IP: a06cfcc7dfbca4c829963fcf485472bb-53359176.eu-central-1.elb.amazonaws.com
 
 jobs:
   memcache-audit:
@@ -175,7 +176,7 @@ jobs:
       run:
         working-directory: ./Services/FE_Services/webserver
     env:                                                                                                          
-        MEMCACHE_SERVER_IP: "memcacheserver-test-clusterip"
+        MEMCACHE_SERVER_IP: ${{ env.MEMCACHE_TEST_SERVER_IP }}
     steps:
     - uses: actions/checkout@v2
     - name: Set up Go
