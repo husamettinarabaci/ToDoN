@@ -50,26 +50,48 @@ To test this project, you will need to add the following environment variables
 Clone the project
 
 ```bash
-  git clone https://link-to-project
+  git clone https://github.com/husamettinarabaci/ToDoN.git
 ```
 
-Go to the project directory
+Go to the Mem-Cache Server project directory
 
 ```bash
-  cd my-project
+  cd ToDoN/Services/BE_Services/memcacheserver/
 ```
 
 Install dependencies
 
 ```bash
-  npm install
+  go get
 ```
 
-Start the server
+Build & Start the Mem-Cache Server
 
 ```bash
-  npm run start
+  go build
+  ./memcacheserver
 ```
+
+Go to the Web Server project directory
+
+```bash
+  cd ToDoN/Services/FE_Services/webserver/
+```
+
+Install dependencies
+
+```bash
+  go get
+```
+
+Build & Start the Web Server
+
+```bash
+  go build
+  ./webserver
+```
+
+See [ToDoN](http://localhost)
 
 ## API Reference
 
@@ -138,10 +160,15 @@ function App() {
 
 
 ![Go](https://img.shields.io/badge/Go-v1.19-blue)
+![gRPC](https://img.shields.io/badge/gRPC-proto-blue)
 ![Docker](https://img.shields.io/badge/Docker-passing-green)
 ![Kubernetes](https://img.shields.io/badge/Kubernetes-MicroServices-blue)
 ![Aws](https://img.shields.io/badge/Aws-Eks-blue)
 ![github](https://img.shields.io/badge/Github-Actions-green)
+![API](https://img.shields.io/badge/API-http-blue)
+![Test](https://img.shields.io/badge/Test-unit-green)
+![Test](https://img.shields.io/badge/Test-cdc-green)
+![CI/CD](https://img.shields.io/badge/CI-CD-automation-green)
 
 ## License
 
