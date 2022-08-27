@@ -9,13 +9,11 @@ Web Based ToDo List Application
 
 ![App Screenshot](./Documents/Images/webpage.png)
 
-
 ## Demo
 
 Demo uygulama buradan erişebilirsiniz :
 
 - [@live-demo](http://aab6a856cd8984348b4e34a58610665f-1150680336.eu-central-1.elb.amazonaws.com)
-
 
 ## Environment Variables
 
@@ -115,7 +113,6 @@ See [ToDoN](http://localhost)
 | :-------- | :------- | :-------------------------------- |
 | `Item`    | `string` | **Required**.                     |
 
-
 ## Deployment
 
 To deploy this project run
@@ -124,12 +121,6 @@ To deploy this project run
   npm run deploy
 ```
 
-
-## Documentation
-
-[Documentation](https://linktodocumentation)
-
-
 ## Running Tests
 
 To run tests, run the following command
@@ -137,7 +128,6 @@ To run tests, run the following command
 ```bash
   npm run test
 ```
-
 
 ## Usage/Examples
 
@@ -149,15 +139,17 @@ function App() {
 }
 ```
 
+## Screenshots
+
+[Screenshots](./README_screens.md)
+
 ## CI/CD Pipeline
 
 ![CI/CD](./Documents/Images/pipeline.png)
 
 ![CI/CD](./Documents/Images/pipeline_done.png)
 
-
 ## Tech Stack
-
 
 ![Go](https://img.shields.io/badge/Go-v1.19-blue)
 ![gRPC](https://img.shields.io/badge/gRPC-proto-blue)
