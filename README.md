@@ -43,7 +43,7 @@ To test this project, you will need to add the following environment variables
 
 `MEMCACHE_SERVER_PORT` 
 
-## Installation - Aws Eks
+## Installation - K8S
 
 ### Namespaces
 
