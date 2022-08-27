@@ -1,47 +1,177 @@
-# ToDoN
-Web Based ToDo List Application for Modanisa
 
-## Deciriptions
+## Badges
+
+Add badges from somewhere like: [shields.io](https://shields.io/)
+
+[![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](https://choosealicense.com/licenses/mit/)
+[![GPLv3 License](https://img.shields.io/badge/License-GPL%20v3-yellow.svg)](https://opensource.org/licenses/)
+[![AGPL License](https://img.shields.io/badge/license-AGPL-blue.svg)](http://www.gnu.org/licenses/agpl-3.0)
+
+
+# ToDoN
+
+A brief description of what this project does and who it's for
+
+
+## API Reference
+
+#### Get all Todos
+
+```http
+  GET /api/v1/all
+```
+
+| Parameter | Type     | Description                |
+| :-------- | :------- | :------------------------- |
+| ` N/A   ` | `      ` |                            |
+
+#### Add a new todo
+
+```http
+  POST /api/v1/add/
+```
+
+| Data      | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `Item`    | `string` | **Required**.                     |
+
+
+
+## Authors
+
+- [@husamettinarabaci](https://www.github.com/husamettinarabaci)
+
+
+## Contributing
+
+Contributions are always welcome!
+
+See `contributing.md` for ways to get started.
+
+Please adhere to this project's `code of conduct`.
+
+
+## Demo
+
+- [@live-demo](http://aab6a856cd8984348b4e34a58610665f-1150680336.eu-central-1.elb.amazonaws.com)
+
+
+
+## Environment Variables
+
+### Actions
+
+To run this project, you will need to add the following environment variables to your 
+Gtihub.com -> Repo -> Settings -> Secrets->Actions
+
+`AWS_ACCESS_KEY_ID`
+
+`AWS_REGION`
+
+`AWS_SECRET_ACCESS_KEY`
+
+`DOCKER_HUB_ACCESS_TOKEN` -> Docker.com -> Security > New Access Token
+
+`DOCKER_HUB_USERNAME`
+
+`KUBE_CONFIG_DATA` -> cat $HOME/.kube/config | base64
+
+### Web Server - Test
+
+To test this project, you will need to add the following environment variables
+
+`MEMCACHE_SERVER_IP`
+
+`MEMCACHE_SERVER_PORT` 
+
+
+
+
+## Deployment
+
+To deploy this project run
+
+```bash
+  npm run deploy
+```
+
+
+## Documentation
+
+[Documentation](https://linktodocumentation)
+
 
 ## Installation
 
-## Usage
+Install my-project with npm
 
-## For Developers
- - installation golang 
- - installation protoc
- - github secrets
- - folder structere
- - git tag usage
+```bash
+  npm install my-project
+  cd my-project
+```
+    
+## License
 
-
-Namespace
-- kubectl create -f Configs/K8S/Namespaces/todon-prod-namespace.yaml
-- kubectl create -f Configs/K8S/Namespaces/todon-test-namespace.yaml
-Config
-- kubectl create -f Configs/K8S/Configs/prod/memcacheserver-prod-config.yaml
-- kubectl create -f Configs/K8S/Configs/prod/webserver-prod-config.yaml 
-- kubectl create -f Configs/K8S/Configs/test/memcacheserver-test-config.yaml 
-- kubectl create -f Configs/K8S/Configs/test/webserver-test-config.yaml 
-Cluster IP
-- kubectl create -f Configs/K8S/ClusterIPs/prod/memcacheserver-prod-clusterip.yaml 
-- kubectl create -f Configs/K8S/ClusterIPs/test/memcacheserver-test-clusterip.yaml 
-LoadBalancer
-- kubectl create -f Configs/K8S/LoadBalancers/prod/memcacheserver-prod-loadbalancer.yaml 
-- kubectl create -f Configs/K8S/LoadBalancers/prod/webserver-prod-loadbalancer.yaml 
-- kubectl create -f Configs/K8S/LoadBalancers/test/memcacheserver-test-loadbalancer.yaml 
-- kubectl create -f Configs/K8S/LoadBalancers/test/webserver-test-loadbalancer.yaml 
-Deployment
-- kubectl create -f Configs/K8S/Deployments/prod/memcacheserver-prod-deployment.yaml
-- kubectl create -f Configs/K8S/Deployments/prod/webserver-prod-deployment.yaml 
-- kubectl create -f Configs/K8S/Deployments/test/memcacheserver-test-deployment.yaml 
-- kubectl create -f Configs/K8S/Deployments/test/webserver-test-deployment.yaml 
+[MIT](https://choosealicense.com/licenses/mit/)
 
 
+## Run Locally
 
- namespace todon-prod,todon-test
+Clone the project
 
- memcahceserver Prod LoadBalancer IP : ac871331e10a24d3fb1775da164f9258-2020354426.eu-central-1.elb.amazonaws.com
- memcahceserver Test LoadBalancer IP : a06cfcc7dfbca4c829963fcf485472bb-53359176.eu-central-1.elb.amazonaws.com
- webserver Prod LoadBalancer IP : aab6a856cd8984348b4e34a58610665f-1150680336.eu-central-1.elb.amazonaws.com
- webserver Test LoadBalancer IP : a970bf7ee7cce4ea8be39748807dcc44-429638464.eu-central-1.elb.amazonaws.com
+```bash
+  git clone https://link-to-project
+```
+
+Go to the project directory
+
+```bash
+  cd my-project
+```
+
+Install dependencies
+
+```bash
+  npm install
+```
+
+Start the server
+
+```bash
+  npm run start
+```
+
+
+## Screenshots
+
+![App Screenshot](https://via.placeholder.com/468x300?text=App+Screenshot+Here)
+
+
+## Running Tests
+
+To run tests, run the following command
+
+```bash
+  npm run test
+```
+
+
+## Usage/Examples
+
+```javascript
+import Component from 'my-project'
+
+function App() {
+  return <Component />
+}
+```
+
+
+## Tech Stack
+
+
+![Go](https://img.shields.io/badge/Go-v1.19-blue)
+![Docker](https://img.shields.io/badge/Docker-passing-green)
+![Kubernetes](https://img.shields.io/badge/Kubernetes-MicroServices-blue)
+![Aws](https://img.shields.io/badge/Aws-Eks-blue)
+![github](https://img.shields.io/badge/Github-Actions-green)

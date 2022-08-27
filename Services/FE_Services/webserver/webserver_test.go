@@ -16,10 +16,6 @@ var addTests = []string{
 	"Go to work",
 }
 
-func setServerConfigForTest() {
-	memcacheServerIP = "a06cfcc7dfbca4c829963fcf485472bb-53359176.eu-central-1.elb.amazonaws.com"
-}
-
 func TestHealthHandler(t *testing.T) {
 	t.Run("health probe statu", func(t *testing.T) {
 		request, _ := http.NewRequest(http.MethodGet, "/health", nil)
@@ -34,7 +30,6 @@ func TestHealthHandler(t *testing.T) {
 }
 
 func TestGetAllTodoHandler(t *testing.T) {
-	setServerConfigForTest()
 	t.Run("get all todo", func(t *testing.T) {
 		request, _ := http.NewRequest(http.MethodGet, "/", nil)
 		response := httptest.NewRecorder()
@@ -48,7 +43,6 @@ func TestGetAllTodoHandler(t *testing.T) {
 }
 
 func TestGetAllTodoAPIHandler(t *testing.T) {
-	setServerConfigForTest()
 	t.Run("get all todo by api", func(t *testing.T) {
 		request, _ := http.NewRequest(http.MethodGet, "/api/v1/all", nil)
 		response := httptest.NewRecorder()
@@ -62,7 +56,6 @@ func TestGetAllTodoAPIHandler(t *testing.T) {
 }
 
 func TestAddTodoHandler(t *testing.T) {
-	setServerConfigForTest()
 	t.Run("add todo", func(t *testing.T) {
 		for _, v := range addTests {
 			request, _ := http.NewRequest(http.MethodPost, "/add", strings.NewReader(fmt.Sprintf("item=%s", v)))
@@ -79,7 +72,6 @@ func TestAddTodoHandler(t *testing.T) {
 }
 
 func TestAddTodoAPIHandler(t *testing.T) {
-	setServerConfigForTest()
 	t.Run("add todo by api", func(t *testing.T) {
 		for _, v := range addTests {
 

@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"io"
 	"log"
 	"net/http"
@@ -42,6 +43,8 @@ func init() {
 	if sp := os.Getenv("MEMCACHE_SERVER_PORT"); sp != "" {
 		memcacheServerPort = sp
 	}
+
+	fmt.Println(memcacheServerIP)
 }
 
 func main() {
