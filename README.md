@@ -198,6 +198,107 @@ After this action, the following events occur automatically:
 
 ![CI/CD](./Documents/Images/pipeline_done.png)
 
+## Directory Structure
+
+└── ToDoN
+    ├── Configs
+    │   ├── DockerFiles
+    │   │   ├── Dockerfile_memcacheserver
+    │   │   ├── Dockerfile_webserver
+    │   │   └── Dockerfile_webserver_apicdctest
+    │   ├── K8S
+    │   │   ├── ClusterIPs
+    │   │   │   ├── prod
+    │   │   │   │   └── memcacheserver-prod-clusterip.yaml
+    │   │   │   └── test
+    │   │   │       └── memcacheserver-test-clusterip.yaml
+    │   │   ├── Configs
+    │   │   │   ├── prod
+    │   │   │   │   ├── memcacheserver-prod-config.yaml
+    │   │   │   │   └── webserver-prod-config.yaml
+    │   │   │   └── test
+    │   │   │       ├── memcacheserver-test-config.yaml
+    │   │   │       └── webserver-test-config.yaml
+    │   │   ├── Deployments
+    │   │   │   ├── prod
+    │   │   │   │   ├── memcacheserver-prod-deployment.yaml
+    │   │   │   │   └── webserver-prod-deployment.yaml
+    │   │   │   └── test
+    │   │   │       ├── memcacheserver-test-deployment.yaml
+    │   │   │       └── webserver-test-deployment.yaml
+    │   │   ├── LoadBalancers
+    │   │   │   ├── prod
+    │   │   │   │   ├── memcacheserver-prod-loadbalancer.yaml
+    │   │   │   │   └── webserver-prod-loadbalancer.yaml
+    │   │   │   └── test
+    │   │   │       ├── memcacheserver-test-loadbalancer.yaml
+    │   │   │       └── webserver-test-loadbalancer.yaml
+    │   │   └── Namespaces
+    │   │       ├── todon-prod-namespace.yaml
+    │   │       └── todon-test-namespace.yaml
+    │   └── Tests
+    │       └── webserver_apicdctest_config.apib
+    ├── Documents
+    │   ├── Images
+    │   │   ├── configmaps.png
+    │   │   ├── deployments.png
+    │   │   ├── endpoints.png
+    │   │   ├── memcacheserver_test_duplicate_data_result.png
+    │   │   ├── memcacheserver_test_result.png
+    │   │   ├── nodes.png
+    │   │   ├── pipeline_done.png
+    │   │   ├── pipeline.png
+    │   │   ├── pods.png
+    │   │   ├── services.png
+    │   │   ├── webpage.png
+    │   │   └── webserver_test_result.png
+    │   ├── Tasks
+    │   │   └── technologist.pdf
+    │   └── Workflows_test
+    │       ├── memcacheserver_audit.yml
+    │       ├── memcacheserver_prod_build.yml
+    │       ├── memcacheserver_prod_deploy.yml
+    │       ├── memcacheserver_test_build.yml
+    │       ├── memcacheserver_test_deploy.yml
+    │       ├── memcacheserver.yml
+    │       ├── webserver_audit.yml
+    │       ├── webserver_prod_build.yml
+    │       ├── webserver_prod_deploy.yml
+    │       ├── webserver_test_build.yml
+    │       ├── webserver_test_deploy.yml
+    │       └── webserver.yml
+    ├── go.work
+    ├── go.work.sum
+    ├── LICENSE
+    ├── Note.md
+    ├── README.md
+    ├── README_screens.md
+    └── Services
+        ├── BE_Services
+        │   └── memcacheserver
+        │       ├── doc.go
+        │       ├── go.mod
+        │       ├── go.sum
+        │       ├── memcacheserver.go
+        │       └── memcacheserver_test.go
+        ├── FE_Services
+        │   └── webserver
+        │       ├── doc.go
+        │       ├── go.mod
+        │       ├── go.sum
+        │       ├── views
+        │       │   └── index.html
+        │       ├── webserver.go
+        │       └── webserver_test.go
+        └── Shareds
+            └── proto
+                └── item
+                    ├── go.mod
+                    ├── go.sum
+                    ├── item_grpc.pb.go
+                    ├── item.pb.go
+                    └── item.proto
+
 ## Screenshots
 
 [Screenshots](./README_screens.md)
