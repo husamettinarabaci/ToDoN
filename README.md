@@ -139,15 +139,15 @@ function App() {
 }
 ```
 
-## Screenshots
-
-[Screenshots](./README_screens.md)
-
 ## CI/CD Pipeline
 
 ![CI/CD](./Documents/Images/pipeline.png)
 
 ![CI/CD](./Documents/Images/pipeline_done.png)
+
+## Screenshots
+
+[Screenshots](./README_screens.md)
 
 ## Tech Stack
 

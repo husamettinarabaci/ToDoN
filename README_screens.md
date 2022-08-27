@@ -32,7 +32,7 @@
 
 ## Pipeline Done
 
-![Pipeline Done](./Documents/Images/pipline_done.png)
+![Pipeline Done](./Documents/Images/pipeline_done.png)
 
 # Unit Tests
 
