@@ -41,16 +41,6 @@ Demo uygulama buradan erişebilirsiniz :
 | `Item`    | `string` | **Required**.                     |
 
 
-
-## Contributing
-
-Contributions are always welcome!
-
-See `contributing.md` for ways to get started.
-
-Please adhere to this project's `code of conduct`.
-
-
 ## Environment Variables
 
 ### Actions
@@ -159,6 +149,12 @@ function App() {
   return <Component />
 }
 ```
+
+## Contributing
+
+Contributions are always welcome!
+
+Please adhere to this project's `code of conduct`.
 
 
 ## Tech Stack
