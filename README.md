@@ -1,16 +1,21 @@
 
-## Badges
-
-Add badges from somewhere like: [shields.io](https://shields.io/)
-
 [![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](https://choosealicense.com/licenses/mit/)
-[![GPLv3 License](https://img.shields.io/badge/License-GPL%20v3-yellow.svg)](https://opensource.org/licenses/)
-[![AGPL License](https://img.shields.io/badge/license-AGPL-blue.svg)](http://www.gnu.org/licenses/agpl-3.0)
-
 
 # ToDoN
 
-A brief description of what this project does and who it's for
+Bu uygulama web tabanlı bir Todo List uygulamasıdır.
+
+## Screenshots
+
+![App Screenshot](./Documents/Images/webpage.png)
+
+
+## Demo
+
+Demo uygulama buradan erişebilirsiniz :
+
+- [@live-demo](http://aab6a856cd8984348b4e34a58610665f-1150680336.eu-central-1.elb.amazonaws.com)
+
 
 
 ## API Reference
@@ -37,11 +42,6 @@ A brief description of what this project does and who it's for
 
 
 
-## Authors
-
-- [@husamettinarabaci](https://www.github.com/husamettinarabaci)
-
-
 ## Contributing
 
 Contributions are always welcome!
@@ -49,12 +49,6 @@ Contributions are always welcome!
 See `contributing.md` for ways to get started.
 
 Please adhere to this project's `code of conduct`.
-
-
-## Demo
-
-- [@live-demo](http://aab6a856cd8984348b4e34a58610665f-1150680336.eu-central-1.elb.amazonaws.com)
-
 
 
 ## Environment Variables
@@ -175,3 +169,8 @@ function App() {
 ![Kubernetes](https://img.shields.io/badge/Kubernetes-MicroServices-blue)
 ![Aws](https://img.shields.io/badge/Aws-Eks-blue)
 ![github](https://img.shields.io/badge/Github-Actions-green)
+
+## Authors
+
+- [@husamettinarabaci](https://www.github.com/husamettinarabaci)
+
