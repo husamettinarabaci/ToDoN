@@ -11,9 +11,7 @@ Web Based ToDo List Application
 
 ## Demo
 
-Demo uygulama buradan erişebilirsiniz :
-
-- [@live-demo](http://aab6a856cd8984348b4e34a58610665f-1150680336.eu-central-1.elb.amazonaws.com)
+See : [@live-demo](http://aab6a856cd8984348b4e34a58610665f-1150680336.eu-central-1.elb.amazonaws.com)
 
 ## Environment Variables
 
@@ -132,7 +130,7 @@ Build & Start the Web Server
   ./webserver
 ```
 
-See [ToDoN](http://localhost)
+See : [ToDoN](http://localhost)
 
 ## API Reference
 
