@@ -17,35 +17,12 @@ Demo uygulama buradan erişebilirsiniz :
 - [@live-demo](http://aab6a856cd8984348b4e34a58610665f-1150680336.eu-central-1.elb.amazonaws.com)
 
 
-
-## API Reference
-
-#### Get all Todos
-
-```http
-  GET /api/v1/all
-```
-
-| Parameter | Type     | Description                |
-| :-------- | :------- | :------------------------- |
-| ` N/A   ` | `      ` |                            |
-
-#### Add a new todo
-
-```http
-  POST /api/v1/add/
-```
-
-| Data      | Type     | Description                       |
-| :-------- | :------- | :-------------------------------- |
-| `Item`    | `string` | **Required**.                     |
-
-
 ## Environment Variables
 
 ### Actions
 
 To run this project, you will need to add the following environment variables to your 
+
 Gtihub.com -> Repo -> Settings -> Secrets->Actions
 
 `AWS_ACCESS_KEY_ID`
@@ -67,33 +44,6 @@ To test this project, you will need to add the following environment variables
 `MEMCACHE_SERVER_IP`
 
 `MEMCACHE_SERVER_PORT` 
-
-
-
-
-## Deployment
-
-To deploy this project run
-
-```bash
-  npm run deploy
-```
-
-
-## Documentation
-
-[Documentation](https://linktodocumentation)
-
-
-## Installation
-
-Install my-project with npm
-
-```bash
-  npm install my-project
-  cd my-project
-```
-
 
 ## Run Locally
 
@@ -120,6 +70,42 @@ Start the server
 ```bash
   npm run start
 ```
+
+## API Reference
+
+#### Get all Todos
+
+```http
+  GET /api/v1/all
+```
+
+| Parameter | Type     | Description                |
+| :-------- | :------- | :------------------------- |
+| ` N/A   ` | `      ` |                            |
+
+#### Add a new todo
+
+```http
+  POST /api/v1/add/
+```
+
+| Data      | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `Item`    | `string` | **Required**.                     |
+
+
+## Deployment
+
+To deploy this project run
+
+```bash
+  npm run deploy
+```
+
+
+## Documentation
+
+[Documentation](https://linktodocumentation)
 
 
 ## Running Tests
