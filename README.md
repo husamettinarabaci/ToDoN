@@ -327,7 +327,8 @@ Contributions are always welcome!
 
 Please adhere to this project's `code of conduct`.
 
-## Authors
-
+## Developers:
+<img src="https://github.com/husamettinarabaci/husamettinarabaci/blob/main/hsmtek-logo.png?raw=true" width="200"/>
+Web Site        : www.hsmteknoloji.com <br />
 - [@husamettinarabaci](https://www.github.com/husamettinarabaci)
 
