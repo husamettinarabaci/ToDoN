@@ -200,20 +200,14 @@ After this action, the following events occur automatically:
 
 ## Directory Structure
 
-└── ToDoN
+─── ToDoN
 
     ├── Configs
-
     │   ├── DockerFiles
-
     │   │   ├── Dockerfile_memcacheserver
-
     │   │   ├── Dockerfile_webserver
-
     │   │   └── Dockerfile_webserver_apicdctest
-
     │   ├── K8S
-
     │   │   ├── ClusterIPs
     │   │   │   ├── prod
     │   │   │   │   └── memcacheserver-prod-clusterip.yaml
