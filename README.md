@@ -43,6 +43,49 @@ To test this project, you will need to add the following environment variables
 
 `MEMCACHE_SERVER_PORT` 
 
+## Installation - Aws Eks
+
+### Namespaces
+
+```bash
+- kubectl create -f Configs/K8S/Namespaces/todon-prod-namespace.yaml
+- kubectl create -f Configs/K8S/Namespaces/todon-test-namespace.yaml
+```
+
+### Config Maps
+
+```bash
+- kubectl create -f Configs/K8S/Configs/prod/memcacheserver-prod-config.yaml
+- kubectl create -f Configs/K8S/Configs/prod/webserver-prod-config.yaml 
+- kubectl create -f Configs/K8S/Configs/test/memcacheserver-test-config.yaml 
+- kubectl create -f Configs/K8S/Configs/test/webserver-test-config.yaml 
+```
+
+### Cluster IPs
+
+```bash
+- kubectl create -f Configs/K8S/ClusterIPs/prod/memcacheserver-prod-clusterip.yaml 
+- kubectl create -f Configs/K8S/ClusterIPs/test/memcacheserver-test-clusterip.yaml 
+```
+
+### LoadBalancers
+
+```bash
+- kubectl create -f Configs/K8S/LoadBalancers/prod/memcacheserver-prod-loadbalancer.yaml 
+- kubectl create -f Configs/K8S/LoadBalancers/prod/webserver-prod-loadbalancer.yaml 
+- kubectl create -f Configs/K8S/LoadBalancers/test/memcacheserver-test-loadbalancer.yaml 
+- kubectl create -f Configs/K8S/LoadBalancers/test/webserver-test-loadbalancer.yaml 
+```
+
+### Deployments
+
+```bash
+- kubectl create -f Configs/K8S/Deployments/prod/memcacheserver-prod-deployment.yaml
+- kubectl create -f Configs/K8S/Deployments/prod/webserver-prod-deployment.yaml 
+- kubectl create -f Configs/K8S/Deployments/test/memcacheserver-test-deployment.yaml 
+- kubectl create -f Configs/K8S/Deployments/test/webserver-test-deployment.yaml 
+```
+
 ## Run Locally
 
 Clone the project
@@ -113,31 +156,41 @@ See [ToDoN](http://localhost)
 | :-------- | :------- | :-------------------------------- |
 | `Item`    | `string` | **Required**.                     |
 
+## Running Tests
+
+Go to the Mem-Cache Server project directory or Web Server project directory
+
+```bash
+  cd ToDoN/Services/BE_Services/memcacheserver/
+  or
+  cd ToDoN/Services/FE_Services/webserver/
+```
+
+To run tests, run the following command
+
+```go
+  go run test -v 
+```
+
 ## Deployment
 
 To deploy this project run
 
 ```bash
-  npm run deploy
+  git tag v*.*.* (etc. v2.0.0)
+  git push --tags
 ```
 
-## Running Tests
+From this process, the following happens automatically:
+- Docker Image Build && Push : (DOCKER_HUB_USERNAME)/memcacheserver_test:v2.0.0
+- Docker Image Build && Push : (DOCKER_HUB_USERNAME)/memcacheserver_prod:v2.0.0
+- Docker Image Build && Push : (DOCKER_HUB_USERNAME)/webserver_test:v2.0.0
+- Docker Image Build && Push : (DOCKER_HUB_USERNAME)/webserver_prod:v2.0.0
+- Aws - Eks Update : memcacheserver-prod-deployment
+- Aws - Eks Update : webserver-prod-deployment 
+- Aws - Eks Update : memcacheserver-test-deployment 
+- Aws - Eks Update : webserver-test-deployment 
 
-To run tests, run the following command
-
-```bash
-  npm run test
-```
-
-## Usage/Examples
-
-```javascript
-import Component from 'my-project'
-
-function App() {
-  return <Component />
-}
-```
 
 ## CI/CD Pipeline
 
