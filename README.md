@@ -93,10 +93,6 @@ Install my-project with npm
   npm install my-project
   cd my-project
 ```
-    
-## License
-
-[MIT](https://choosealicense.com/licenses/mit/)
 
 
 ## Run Locally
@@ -126,11 +122,6 @@ Start the server
 ```
 
 
-## Screenshots
-
-![App Screenshot](https://via.placeholder.com/468x300?text=App+Screenshot+Here)
-
-
 ## Running Tests
 
 To run tests, run the following command
@@ -150,11 +141,11 @@ function App() {
 }
 ```
 
-## Contributing
+## CI/CD Pipeline
 
-Contributions are always welcome!
+![CI/CD](./Documents/Images/pipeline.png)
 
-Please adhere to this project's `code of conduct`.
+![CI/CD](./Documents/Images/pipeline_done.png)
 
 
 ## Tech Stack
@@ -165,6 +156,16 @@ Please adhere to this project's `code of conduct`.
 ![Kubernetes](https://img.shields.io/badge/Kubernetes-MicroServices-blue)
 ![Aws](https://img.shields.io/badge/Aws-Eks-blue)
 ![github](https://img.shields.io/badge/Github-Actions-green)
+
+## License
+
+[MIT](https://choosealicense.com/licenses/mit/)
+
+## Contributing
+
+Contributions are always welcome!
+
+Please adhere to this project's `code of conduct`.
 
 ## Authors
 
