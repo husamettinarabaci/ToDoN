@@ -160,7 +160,7 @@ function App() {
 ![API](https://img.shields.io/badge/API-http-blue)
 ![Test](https://img.shields.io/badge/Test-unit-green)
 ![Test](https://img.shields.io/badge/Test-cdc-green)
-![CI/CD](https://img.shields.io/badge/CI-CD-automation-green)
+![CI/CD](https://img.shields.io/badge/CI%20CD-automation-green)
 
 ## License
 
